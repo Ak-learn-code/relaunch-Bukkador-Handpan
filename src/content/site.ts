@@ -11,6 +11,7 @@ export type SitePage = {
   slug: string;
   label: string;
   title: string;
+  eyebrow?: string;
   description: string;
   intro: string;
   image: ImageAsset;
@@ -56,7 +57,7 @@ export const homeFaqs: FAQ[] = [
 export const pages: SitePage[] = [
   {
     slug: 'corporate-events', label: 'Corporate Events',
-    title: 'Handpan Live-Musik für Corporate Events',
+    title: 'Handpan für Corporate Events.', eyebrow: 'Live-Musik für Unternehmen',
     description: 'Bukkador Handpan begleitet Firmenveranstaltungen, Empfänge, Messen und Galas mit professioneller Live-Musik. Rhein-Neckar, Rhein-Main und deutschlandweit.',
     intro: 'Ein besonderer Klang schafft Raum für Begegnung. Michael Noll gestaltet mit der Handpan musikalische Momente, die Ihren Event tragen – präsent, wenn sie wirken sollen, und zurückhaltend, wenn Gespräche im Mittelpunkt stehen.',
     image: images.artistWide,
@@ -71,7 +72,7 @@ export const pages: SitePage[] = [
   },
   {
     slug: 'hochzeiten', label: 'Hochzeiten',
-    title: 'Handpan Live-Musik für Hochzeiten',
+    title: 'Ein Klang für Ihren Tag.', eyebrow: 'Handpan Live-Musik für Hochzeiten',
     description: 'Handpan-Musik von Bukkador für freie Trauung, Sektempfang und Dinner. Persönlich geplant für Brautpaare, Wedding Planner und Locations.',
     intro: 'Manche Augenblicke brauchen keine große Geste. Die warmen, sphärischen Klänge der Handpan geben einer Hochzeit eine besondere Atmosphäre – bei der freien Trauung, zum Empfang oder als musikalischer Faden durch das Dinner.',
     image: images.artistPortrait,
@@ -89,13 +90,13 @@ export const pages: SitePage[] = [
   },
   {
     slug: 'eventagenturen', label: 'Eventagenturen',
-    title: 'Ein besonderer Live-Act für Ihre Eventkonzepte',
+    title: 'Ein Live-Act, der mitdenkt.', eyebrow: 'Für Eventagenturen',
     description: 'Bukkador Handpan als professioneller Live-Act für Eventagenturen: individuelle Performance, eigene Technik und direkte Abstimmung – deutschlandweit.',
     intro: 'Sie planen Erlebnisse, die stimmig sein müssen. Bukkador ergänzt Ihr Konzept mit einem eigenständigen musikalischen Format – für Corporate Events, Empfänge, Messen, Galas und besondere Inszenierungen.',
-    image: images.artistWide,
+    image: images.instrument,
     details: ['Direkte Abstimmung', 'Technik aus einer Hand', 'Deutschlandweit buchbar'],
     sections: [
-      { title: 'Ein Format mit Spielraum.', text: 'Dezente Atmosphäre beim Empfang, akzentuierte Live-Momente oder mehrere Sets über einen Veranstaltungsabschnitt: Die Handpan-Performance lässt sich in unterschiedliche Dramaturgien integrieren.', image: images.instrument },
+      { title: 'Ein Format mit Spielraum.', text: 'Dezente Atmosphäre beim Empfang, akzentuierte Live-Momente oder mehrere Sets über einen Veranstaltungsabschnitt: Die Handpan-Performance lässt sich in unterschiedliche Dramaturgien integrieren.', image: images.artistWide },
       { title: 'Ein Ansprechpartner. Klare Planung.', text: 'Michael Noll stimmt Performance, Timing, Spielort und technische Anforderungen direkt mit Ihrem Team ab. Eigenes Equipment und Auf- und Abbau vereinfachen die Umsetzung vor Ort.', points: ['Briefing und Ablaufabstimmung', 'Eigene Handpans und MAUI-PA-System', 'Flexible Sets über zwei bis vier Stunden', 'Buchungen im gesamten Bundesgebiet'], tone: 'green' },
       { title: 'Für langfristige Zusammenarbeit.', text: 'Wenn Sie für künftige Projekte einen außergewöhnlichen Live-Act suchen, lernen wir uns gern kennen. Senden Sie ein konkretes Briefing oder fragen Sie unverbindlich nach einem Künstlerprofil und der Verfügbarkeit.', image: images.artistPortrait },
     ],
@@ -104,7 +105,7 @@ export const pages: SitePage[] = [
   },
   {
     slug: 'ueber-bukkador', label: 'Über Bukkador',
-    title: 'Michael Noll. Handpan-Artist aus Worms.',
+    title: 'Michael Noll. Handpan-Artist aus Worms.', eyebrow: 'Die Person hinter Bukkador',
     description: 'Lernen Sie Michael Noll kennen: Handpan-Musiker und Gründer von Bukkador Handpan aus Worms. Live-Musik und Handpan-Unterricht mit persönlicher Handschrift.',
     intro: 'Hinter Bukkador steht Michael Noll – Handpan-Musiker und Coach aus Worms. Seine Musik lebt von dem besonderen Klang der Instrumente und von der Aufmerksamkeit für die Menschen im Raum.',
     image: images.artistPortrait,
@@ -117,23 +118,23 @@ export const pages: SitePage[] = [
   },
   {
     slug: 'referenzen', label: 'Events & Einblicke',
-    title: 'Bukkador live erleben',
+    title: 'Bukkador live erleben', eyebrow: 'Events & Einblicke',
     description: 'Einblicke in das bisherige Veranstaltungsprogramm von Bukkador Handpan und die musikalischen Einsatzmöglichkeiten für Events.',
-    intro: 'Live-Musik lässt sich am besten erleben. Hier finden Sie eine Auswahl öffentlich angekündigter Termine aus dem bisherigen Bukkador-Veranstaltungskalender und Einblicke in Michaels Arbeit.',
+    intro: 'Live-Musik lässt sich am besten erleben. Hier finden Sie öffentlich angekündigte Termine aus dem Bukkador-Veranstaltungskalender und Einblicke in Michaels Arbeit.',
     image: images.artistWide,
-    details: ['Öffentlich angekündigte Auftritte', 'Keine Kundennamen oder Testimonials', 'Weitere Medien folgen'],
+    details: ['Öffentliche Termine aus 2026', 'Einblicke in Michaels Arbeit', 'Live-Musik für Ihr Event'],
     sections: [
-      { title: 'Aus dem Veranstaltungskalender.', text: 'Wormser Kulturnacht (13. Juni 2026), Open Stage im KulturGUT Bechtolsheim (1. Mai 2026), Hofkonzert in Offstein (9. Mai 2026) und Handwerkermarkt Franklin in Mannheim (12. September 2026) waren auf der bisherigen Bukkador-Website als öffentliche Termine aufgeführt. Diese Liste ist kein Nachweis für Corporate-Kunden oder Partnerschaften.', image: images.artistPortrait },
-      { title: 'Das passende Bildmaterial entsteht noch.', text: 'Ein professioneller Mitschnitt einer echten Veranstaltung mit Publikum würde den Live-Charakter besser zeigen als ein Studio- oder Pressefoto. Bis solches Material vorliegt, zeigen wir ausschließlich vorhandene Originalaufnahmen von Michael Noll und seiner Handpan.', image: images.instrument, tone: 'green' },
+      { title: 'Aus dem Kalender.', text: 'Wormser Kulturnacht, Open Stage im KulturGUT Bechtolsheim, Hofkonzert in Offstein und Handwerkermarkt Franklin in Mannheim: Diese öffentlich angekündigten Termine aus 2026 zeigen, wie unterschiedlich der Rahmen für Handpan-Musik sein kann.', image: images.artistPortrait },
+      { title: 'Live statt Inszenierung.', text: 'Die Musik von Michael Noll entsteht im direkten Kontakt mit Raum und Publikum. Die Bilder auf dieser Seite zeigen den Künstler und sein Instrument. Welche Atmosphäre Bukkador für Ihr Event schaffen kann, besprechen wir am besten persönlich.', image: images.instrument, tone: 'green' },
     ],
     closing: 'Sie möchten Bukkador für Ihre Veranstaltung buchen? Senden Sie uns Ihre Eckdaten.',
   },
   {
     slug: 'academy', label: 'Academy',
-    title: 'Handpan spielen lernen',
+    title: 'Handpan spielen lernen', eyebrow: 'Bukkador Academy',
     description: 'Bukkador Handpan Academy: Schnupperkurs, Einzelunterricht, Handpan for two und Workshops mit Michael Noll in Worms und Umgebung.',
     intro: 'Der erste Ton auf einer Handpan ist oft der Anfang von etwas Neuem. Michael Noll begleitet Anfänger und Fortgeschrittene im persönlichen Unterricht – entspannt, praxisnah und mit Raum für den eigenen Ausdruck.',
-    image: images.lesson,
+    image: images.workshop,
     details: ['Schnupperkurs', 'Einzelunterricht', 'Handpan for two'],
     sections: [
       { title: 'Entdecken, wie es sich anfühlt.', text: 'Im zweistündigen Schnupperkurs lernen Sie unterschiedliche Skalen und erste Anschlagtechniken kennen. Michael bringt mehrere Handpans mit, damit Sie ihre Klangfarben direkt erleben können.', image: images.instrument },
@@ -144,27 +145,27 @@ export const pages: SitePage[] = [
   },
   {
     slug: 'event-kuenstler-rhein-neckar', label: 'Rhein-Neckar',
-    title: 'Live-Musik für Events in Rhein-Neckar',
+    title: 'Ein Klang für Rhein-Neckar.', eyebrow: 'Live-Musik aus Worms',
     description: 'Bukkador Handpan aus Worms für Corporate Events, Empfänge und Hochzeiten in der Rhein-Neckar-Region – mit eigener Technik und individueller Planung.',
     intro: 'Rund um Mannheim, Heidelberg, Ludwigshafen und Worms begleitet Bukkador Veranstaltungen mit Handpan-Live-Musik. Die regionale Nähe macht die Abstimmung einfach; das musikalische Konzept bleibt individuell.',
-    image: images.artistWide,
+    image: images.instrument,
     details: ['Mannheim · Heidelberg · Worms', 'Corporate & Hochzeit', 'Eigene Technik'],
     sections: [
-      { title: 'Ein Klang für die Region.', text: 'Ob Empfang in Mannheim, Firmenveranstaltung in Heidelberg oder Hochzeit in der Umgebung von Worms: Michael Noll gestaltet die Performance passend zu Veranstaltungsort, Raum und Ablauf. Die Handpan kann Gespräche begleiten oder bewusst einen Programmpunkt prägen.', image: images.instrument },
-      { title: 'Planung ohne Umwege.', text: 'Bukkador bringt Instrumente und eigenes MAUI-Soundsystem mit und übernimmt Auf- und Abbau. Für längere Veranstaltungen sind mehrere Sets über zwei bis vier Stunden möglich. Sprechen Sie Ort, Gästezahl und gewünschte Atmosphäre frühzeitig an.', tone: 'green' },
+      { title: 'Ein Klang für die Region.', text: 'Ob Empfang in Mannheim, Firmenveranstaltung in Heidelberg oder Hochzeit in der Umgebung von Worms: Michael Noll gestaltet die Performance passend zu Veranstaltungsort, Raum und Ablauf. Die Handpan kann Gespräche begleiten oder bewusst einen Programmpunkt prägen.', image: images.artistWide },
+      { title: 'Planung ohne Umwege.', text: 'Bukkador bringt Instrumente und eigenes MAUI-Soundsystem mit und übernimmt Auf- und Abbau. Für längere Veranstaltungen sind mehrere Sets über zwei bis vier Stunden möglich. Sprechen Sie Ort, Gästezahl und gewünschte Atmosphäre frühzeitig an.', points: ['Startpunkt Worms', 'Für Mannheim, Heidelberg und Umgebung', 'Direkte Abstimmung mit Michael Noll'], tone: 'green' },
     ],
     closing: 'Prüfen Sie die Verfügbarkeit für Ihr Event in Rhein-Neckar.',
   },
   {
     slug: 'event-kuenstler-rhein-main', label: 'Rhein-Main',
-    title: 'Handpan Live-Act für Rhein-Main',
+    title: 'Live-Momente in Rhein-Main.', eyebrow: 'Handpan für Events',
     description: 'Bukkador Handpan für Corporate Events, Galas, Empfänge und Hochzeiten im Rhein-Main-Gebiet. Aus Worms, mit eigener Technik und deutschlandweit buchbar.',
     intro: 'Für Veranstaltungen in Frankfurt, Mainz, Wiesbaden und dem Rhein-Main-Gebiet bietet Bukkador eine eigenständige musikalische Note. Die Performance fügt sich in anspruchsvolle Eventabläufe ein – vom Empfang bis zum Dinner.',
     image: images.artistPortrait,
     details: ['Frankfurt · Mainz · Wiesbaden', 'Für Agenturen & Veranstalter', 'Komplettlösung'],
     sections: [
       { title: 'Atmosphäre für wechselnde Räume.', text: 'Rhein-Main bringt ganz unterschiedliche Veranstaltungsorte zusammen: Hotels, Firmenräume, Messeumgebungen und private Locations. Michael Noll stimmt Spielort, Lautstärke, Sets und Timing auf die jeweilige Situation ab.', image: images.instrument },
-      { title: 'Technik und Musik aus einer Hand.', text: 'Handpans, eigenes Soundsystem sowie Auf- und Abbau gehören zur Planung. So bleibt für Veranstalter und Agenturen ein klarer Ansprechpartner. Buchungen sind auch über Rhein-Main hinaus in ganz Deutschland möglich.', tone: 'green' },
+      { title: 'Technik und Musik aus einer Hand.', text: 'Handpans, eigenes Soundsystem sowie Auf- und Abbau gehören zur Planung. So bleibt für Veranstalter und Agenturen ein klarer Ansprechpartner. Buchungen sind auch über Rhein-Main hinaus in ganz Deutschland möglich.', points: ['Frankfurt, Mainz und Wiesbaden', 'Flexible Sets für Empfang und Dinner', 'Direkter Ansprechpartner vor Ort'], tone: 'green' },
     ],
     closing: 'Erzählen Sie uns von Ihrem Event in Rhein-Main.',
   },

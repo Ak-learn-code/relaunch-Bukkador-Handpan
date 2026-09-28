@@ -7,6 +7,7 @@ const endpoint = import.meta.env.PUBLIC_EVENT_FORM_ENDPOINT ?? '';
   <div class="form-page"><section class="form-hero"><div class="shell"><h1>Erzählen Sie von Ihrem Event.</h1><p>Datum, Ort, Anlass und ein paar Wünsche reichen für den ersten Schritt. Michael Noll prüft die Verfügbarkeit und meldet sich persönlich.</p></div></section>
   <section class="form-area"><div class="shell form-layout"><aside class="form-aside"><h2>Direkt. Persönlich. Klar.</h2><p>Sie bevorzugen den direkten Kontakt?</p><p><a href={`mailto:${site.email}`}>{site.email}</a><br /><a href={site.phoneHref}>{site.phone}</a></p><p>Ohne angebundenen Versanddienst öffnet das Formular einen vorbereiteten E-Mail-Entwurf. Bitte senden Sie ihn anschließend in Ihrem E-Mail-Programm ab.</p></aside>
   <form class="event-form" id="event-form" data-endpoint={endpoint} novalidate>
+    <p class="form-intro">Die mit * markierten Angaben helfen bei der ersten Einschätzung.</p>
     <div class="field"><label for="name">Name *</label><input id="name" name="name" autocomplete="name" required /></div>
     <div class="field"><label for="company">Unternehmen / Agentur</label><input id="company" name="company" autocomplete="organization" /></div>
     <div class="field"><label for="email">E-Mail *</label><input id="email" name="email" type="email" autocomplete="email" required /></div>

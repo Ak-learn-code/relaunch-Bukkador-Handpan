@@ -52,9 +52,9 @@ const structuredData = [
         </nav>
         <a class="header-cta" href="/kontakt/">Event anfragen <span aria-hidden="true">↗</span></a>
         <details class="mobile-nav">
-          <summary aria-label="Menü öffnen"><span></span><span></span><span class="sr-only">Menü</span></summary>
+          <summary aria-label="Menü"><span></span><span></span><span class="sr-only">Menü</span></summary>
           <nav aria-label="Mobile Navigation">
-            {navigation.map((item) => <a href={item.href}>{item.label}</a>)}
+            {navigation.map((item) => <a href={item.href} aria-current={Astro.url.pathname === item.href ? 'page' : undefined}>{item.label}</a>)}
             <a href="/referenzen/">Events & Einblicke</a>
             <a href="/kontakt/">Event anfragen</a>
           </nav>

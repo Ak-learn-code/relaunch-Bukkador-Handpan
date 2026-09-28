@@ -22,3 +22,62 @@
 @media (max-width:700px){.shell{width:min(100% - 2.5rem,1390px)}.section-space{padding-block:4.7rem}h2{font-size:clamp(2.25rem,9vw,3.4rem)}.home-hero-grid,.page-hero-grid{display:flex;flex-direction:column}.home-hero-copy,.page-hero-copy{padding:4.5rem 0 3.8rem}.home-hero h1{font-size:clamp(3.8rem,13vw,5.5rem);margin-bottom:1.3rem}.home-hero p{font-size:1.12rem}.home-hero .minor{margin-top:2.8rem;font-size:.56rem;letter-spacing:.16em}.home-hero-media{min-height:370px;margin-inline:-1.25rem}.hero-note{font-size:.55rem;right:1rem;bottom:1rem}.detail-rail .shell{display:grid;grid-template-columns:1fr 1fr;gap:.55rem 1rem;padding-block:1.3rem}.detail-rail span{font-size:.61rem;line-height:1.5}.detail-rail span+span::before{display:none}.intro-band{padding-block:5.5rem}.intro-grid,.process-grid,.faq-grid,.form-hero .shell,.form-layout{display:block}.intro-grid h2,.process-grid h2{margin-bottom:1.8rem}.intro-grid p{font-size:1rem}.feature-story{padding-bottom:0}.feature-story-grid{display:flex;flex-direction:column}.feature-story-image{height:360px}.feature-story-image img{object-position:67% center}.feature-story-content{padding:4.5rem 1.25rem}.split-links{display:block}.split-link{min-height:360px;padding:4.5rem 1.25rem}.split-link+.split-link{border-left:0;border-top:1px solid var(--line)}.process-grid h2{margin-bottom:2rem}.artist-band{display:flex;flex-direction:column}.artist-band-image{height:420px}.artist-band-copy{padding:4.5rem 1.25rem}.faq-grid h2{margin-bottom:1rem}.faq-grid>div>p{margin-bottom:2.2rem}.closing-inner{display:block}.closing-inner h2{margin-bottom:1.3rem}.closing-inner p{margin-bottom:2rem}.footer-main{grid-template-columns:1fr;gap:3rem;padding-block:4rem}.footer-links{grid-template-columns:1fr 1fr;gap:2.2rem 1.4rem}.footer-bottom{flex-direction:column;gap:.7rem}.page-hero h1{font-size:clamp(3.1rem,11vw,4.7rem)}.page-hero-media{min-height:370px;margin-inline:-1.25rem}.editorial-grid,.editorial-section.reverse .editorial-grid{display:flex;flex-direction:column;align-items:stretch;gap:2.5rem}.editorial-section.reverse .editorial-copy,.editorial-section.reverse .editorial-image{order:initial}.editorial-image{aspect-ratio:1.25}.editorial-copy p{font-size:.98rem}.events-list>div{grid-template-columns:1fr 1fr}.events-list time{grid-column:1/-1;text-align:left;color:var(--muted)}.form-hero h1{margin-bottom:1.5rem}.form-aside{margin-bottom:2.5rem}.event-form{grid-template-columns:1fr}.field.full,.form-actions{grid-column:auto}}
 @media (max-width:420px){.brand{min-width:0}.brand img{width:46px;height:46px}.brand strong{font-size:.82rem}.brand small{font-size:.5rem}.home-hero h1{font-size:3.6rem}.footer-links{grid-template-columns:1fr 1fr}.footer-links a{font-size:.73rem}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* Second visual QA pass: preserve the shared layout while giving each offer its own hierarchy. */
+.page-hero-eyebrow{display:block;margin-bottom:1.6rem;color:var(--gold-light);font-size:.68rem;font-weight:600;letter-spacing:.2em;line-height:1.45;text-transform:uppercase}
+.page-hero h1{font-size:clamp(3.45rem,5vw,5rem);line-height:1.08;max-width:12ch;text-wrap:balance}
+.page-hero p{max-width:52ch}
+.page-hero--hochzeiten{background:var(--paper-dark);color:var(--ink)}
+.page-hero--hochzeiten .page-hero-eyebrow,.page-hero--hochzeiten p{color:var(--forest)}
+.page-hero--hochzeiten .page-hero-grid{grid-template-columns:46% 54%}
+.page-hero--hochzeiten .page-hero-media img{object-position:50% 35%}
+.page-hero--eventagenturen{background:var(--forest)}
+.page-hero--eventagenturen .page-hero-grid{grid-template-columns:53% 47%}
+.page-hero--eventagenturen .page-hero-media img{object-position:45% center}
+.page-hero--academy{background:#e7e9df;color:var(--ink)}
+.page-hero--academy .page-hero-eyebrow,.page-hero--academy p{color:var(--forest)}
+.page-hero--academy .page-hero-media img{object-position:center}
+.page-hero--event-kuenstler-rhein-neckar{background:var(--forest)}
+.page-hero--event-kuenstler-rhein-main{background:var(--paper-dark);color:var(--ink)}
+.page-hero--event-kuenstler-rhein-main .page-hero-eyebrow,.page-hero--event-kuenstler-rhein-main p{color:var(--forest)}
+.detail-rail--academy{background:#cbd3bf}
+.detail-rail--hochzeiten,.detail-rail--event-kuenstler-rhein-main{background:#d9c797}
+.editorial-copy h2,.legal-page h1{overflow-wrap:anywhere}
+.legal-page{overflow-wrap:anywhere}
+.form-hero{padding-block:clamp(4rem,6vw,6rem)}
+.form-intro{grid-column:1/-1;margin:0 0 -.3rem;color:var(--muted);font-size:.82rem}
+.mobile-nav nav a[aria-current=page]{color:var(--gold-light)}
+@media (max-width:950px){
+  html:has(.mobile-nav[open]){overflow:hidden}
+  .mobile-nav nav{position:fixed;top:78px;right:0;left:0;width:100vw;height:calc(100dvh - 78px);max-height:none;overflow-y:auto;padding:1.2rem max(1.25rem,calc((100vw - 720px)/2)) 2rem;box-shadow:none}
+}
+@media (max-width:950px){
+  .page-hero h1{font-size:clamp(2.8rem,5.3vw,4rem)}
+  .page-hero--eventagenturen .page-hero-grid{grid-template-columns:50% 50%}
+  .page-hero--academy .page-hero-grid{display:flex;flex-direction:column}
+  .page-hero--academy .page-hero-copy{padding:4.5rem 0 3.5rem}
+  .page-hero--academy .page-hero-media{min-height:390px;margin-inline:-3.5vw}
+  .page-hero--academy .page-hero-media img{object-position:center 42%}
+}
+@media (max-width:700px){
+  .page-hero .page-hero-grid,.page-hero--hochzeiten .page-hero-grid,.page-hero--eventagenturen .page-hero-grid{display:flex;flex-direction:column}
+  .page-hero-copy{padding:3.7rem 0 3.3rem}
+  .page-hero-eyebrow{margin-bottom:1rem;font-size:.62rem}
+  .page-hero h1{font-size:clamp(2.8rem,10vw,3.7rem);line-height:1.09;margin-bottom:1.2rem}
+  .page-hero p{font-size:.97rem;line-height:1.65;margin-bottom:1.65rem}
+  .page-hero-media{min-height:330px}
+  .page-hero--academy .page-hero-copy{padding:3.7rem 0 3.3rem}
+  .page-hero--academy .page-hero-media{min-height:330px;margin-inline:-1.25rem}
+  .detail-rail .shell{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .detail-rail span{min-width:0;overflow-wrap:anywhere}
+  .form-hero{padding-block:3.7rem}
+  .form-hero h1{font-size:clamp(2.9rem,10vw,3.7rem)}
+  .form-area{padding-block:3.5rem 5rem}
+  .form-layout{display:flex;flex-direction:column}
+  .event-form{order:1}
+  .form-aside{order:2;margin:3.2rem 0 0;padding-top:2rem;border-top:1px solid var(--line)}
+  .form-aside h2{font-size:1.9rem}
+  .form-intro{grid-column:auto}
+  .legal-page h1{font-size:clamp(2.45rem,8.5vw,3.5rem);line-height:1.15}
+  .footer-links>div:last-child{grid-column:1/-1}
+}
