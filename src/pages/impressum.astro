@@ -1,0 +1,7 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../content/site';
+---
+<BaseLayout title="Impressum" description="Impressum und Kontaktangaben von Bukkador Handpan, Michael Noll aus Worms.">
+  <article class="legal-page"><div class="shell"><h1>Impressum</h1><p>Angaben gemäß § 5 DDG</p><p>Michael Noll<br />Bukkador Handpan<br />Mozartstraße 19<br />67549 Worms<br />Deutschland</p><h2>Kontakt</h2><p>Telefon: <a href={site.phoneHref}>{site.phone}</a><br />E-Mail: <a href={`mailto:${site.email}`}>{site.email}</a></p><h2>Verantwortlich für den Inhalt</h2><p>Michael Noll<br />Mozartstraße 19<br />67549 Worms</p><p class="legal-note">Die Kontaktdaten stammen aus dem bisherigen Impressum. Die dortige Angabe „Umsatzsteuer-ID: 44/555/02336“ wurde nicht übernommen, weil das Format überprüft werden muss. Bitte Steuerangaben und den gesamten Rechtstext vor Veröffentlichung fachlich prüfen.</p><h2>Urheberrecht</h2><p>Texte, Fotos, Grafiken und Gestaltung dieser Website sind urheberrechtlich geschützt. Eine Nutzung zu kommerziellen Zwecken bedarf der vorherigen Zustimmung.</p></div></article>
+</BaseLayout>

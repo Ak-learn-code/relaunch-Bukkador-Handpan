@@ -1,0 +1,13 @@
+---
+import type { FAQ } from '../content/site';
+interface Props { items: FAQ[]; title?: string }
+const { items, title = 'Gut zu wissen.' } = Astro.props;
+---
+<section class="faq-section section-space">
+  <div class="shell faq-grid">
+    <div><h2>{title}</h2><p>Die wichtigsten Antworten zur Planung Ihrer Veranstaltung.</p></div>
+    <div class="faq-list">
+      {items.map((item) => <details><summary>{item.question}<span aria-hidden="true">+</span></summary><p>{item.answer}</p></details>)}
+    </div>
+  </div>
+</section>

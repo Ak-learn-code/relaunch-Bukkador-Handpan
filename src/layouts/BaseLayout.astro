@@ -1,0 +1,85 @@
+---
+import '../styles/global.css';
+import { navigation, site } from '../content/site';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  noindex?: boolean;
+}
+const { title, description, image = '/images/michael-noll-wide.webp', noindex = false } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const path = (value: string) => `${base}${value.replace(/^\//, '')}`;
+const canonical = new URL(Astro.url.pathname, site.origin).toString();
+const socialImage = new URL(path(image), site.origin).toString();
+const isHome = Astro.url.pathname === '/';
+const structuredData = [
+  { '@context': 'https://schema.org', '@type': 'WebSite', name: site.name, url: site.origin, inLanguage: 'de-DE' },
+  { '@context': 'https://schema.org', '@type': 'Person', name: site.artist, alternateName: site.name, jobTitle: 'Handpan-Artist', url: site.origin, email: site.email, telephone: site.phone, address: { '@type': 'PostalAddress', addressLocality: 'Worms', addressCountry: 'DE' } },
+];
+---
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#151814" />
+    {noindex && <meta name="robots" content="noindex,follow" />}
+    <title>{isHome ? title : `${title} | Bukkador Handpan`}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/png" href={path('/images/Original-Logo-Symbol.png')} />
+    <link rel="preload" href={path('/fonts/montserrat-latin.woff2')} as="font" type="font/woff2" crossorigin />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Zum Inhalt springen</a>
+    <header class="site-header">
+      <div class="header-inner shell">
+        <a class="brand" href={path('/')} aria-label="Bukkador Handpan – Startseite">
+          <img src={path('/images/Original-Logo-Symbol.png')} alt="" width="54" height="54" />
+          <span><strong>BUKKADOR</strong><small>HANDPAN</small></span>
+        </a>
+        <nav class="desktop-nav" aria-label="Hauptnavigation">
+          {navigation.map((item) => <a href={path(item.href)} aria-current={Astro.url.pathname === item.href ? 'page' : undefined}>{item.label}</a>)}
+        </nav>
+        <a class="header-cta" href={path('/kontakt/')}>Event anfragen <span aria-hidden="true">↗</span></a>
+        <details class="mobile-nav">
+          <summary aria-label="Menü"><span></span><span></span><span class="sr-only">Menü</span></summary>
+          <nav aria-label="Mobile Navigation">
+            {navigation.map((item) => <a href={path(item.href)} aria-current={Astro.url.pathname === item.href ? 'page' : undefined}>{item.label}</a>)}
+            <a href={path('/referenzen/')}>Events & Einblicke</a>
+            <a href={path('/kontakt/')}>Event anfragen</a>
+          </nav>
+        </details>
+      </div>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="site-footer">
+      <div class="shell footer-main">
+        <div>
+          <a class="brand footer-brand" href={path('/')} aria-label="Bukkador Handpan – Startseite">
+            <img src={path('/images/Original-Logo-Symbol.png')} alt="" width="64" height="64" loading="lazy" />
+            <span><strong>BUKKADOR</strong><small>HANDPAN</small></span>
+          </a>
+          <p>Handpan Live-Musik von Michael Noll.<br />Aus Worms. Für besondere Events überall in Deutschland.</p>
+        </div>
+        <div class="footer-links">
+          <div><strong>Entdecken</strong><a href={path('/corporate-events/')}>Corporate Events</a><a href={path('/hochzeiten/')}>Hochzeiten</a><a href={path('/eventagenturen/')}>Eventagenturen</a><a href={path('/referenzen/')}>Events & Einblicke</a></div>
+          <div><strong>Bukkador</strong><a href={path('/ueber-bukkador/')}>Über Michael</a><a href={path('/academy/')}>Academy</a><a href={path('/event-kuenstler-rhein-neckar/')}>Rhein-Neckar</a><a href={path('/event-kuenstler-rhein-main/')}>Rhein-Main</a></div>
+          <div><strong>Kontakt</strong><a href={path('/kontakt/')}>Event-Angebot anfragen</a><a href={`mailto:${site.email}`}>{site.email}</a><a href={site.phoneHref}>{site.phone}</a></div>
+        </div>
+      </div>
+      <div class="shell footer-bottom"><span>© {new Date().getFullYear()} Michael Noll · Bukkador Handpan</span><nav aria-label="Rechtliches"><a href={path('/impressum/')}>Impressum</a><a href={path('/datenschutz/')}>Datenschutz</a><a href={path('/agb/')}>AGB</a></nav></div>
+    </footer>
+  </body>
+</html>

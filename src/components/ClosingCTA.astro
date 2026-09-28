@@ -1,0 +1,8 @@
+---
+interface Props { title?: string; text?: string; academy?: boolean }
+const { title = 'Lassen Sie uns über Ihr Event sprechen.', text = 'Teilen Sie die wichtigsten Eckdaten mit. Bukkador meldet sich mit einem individuellen Angebot.', academy = false } = Astro.props;
+const path = (value: string) => `${import.meta.env.BASE_URL}${value.replace(/^\//, '')}`;
+---
+<section class="closing-cta">
+  <div class="shell closing-inner"><div><h2>{title}</h2><p>{text}</p></div><a class="button button-gold" href={academy ? 'mailto:info@bukkador-handpan.de?subject=Anfrage%20Handpan%20Academy' : path('/kontakt/')}>{academy ? 'Academy anfragen' : 'Event-Angebot anfragen'} <span aria-hidden="true">↗</span></a></div>
+</section>

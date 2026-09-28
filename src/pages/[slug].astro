@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LandingPage from '../components/LandingPage.astro';
+import { pages } from '../content/site';
+import { getPage } from '../lib/sanity';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths = (() => pages.map((page) => ({ params: { slug: page.slug }, props: { fallback: page } }))) satisfies GetStaticPaths;
+const { fallback } = Astro.props;
+const page = await getPage(fallback.slug, fallback);
+---
+<BaseLayout title={page.title} description={page.description} image={page.image.src}><LandingPage page={page} /></BaseLayout>

@@ -1,0 +1,29 @@
+---
+import type { SitePage } from '../content/site';
+import EditorialSection from './EditorialSection.astro';
+import FAQList from './FAQList.astro';
+import ClosingCTA from './ClosingCTA.astro';
+import { listedEvents } from '../content/site';
+interface Props { page: SitePage }
+const { page } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const path = (value: string) => `${base}${value.replace(/^\//, '')}`;
+const closingTitles: Record<string, string> = {
+  hochzeiten: 'Lassen Sie Ihren Tag klingen.',
+  eventagenturen: 'Ihr Konzept. Unser Klang.',
+  academy: 'Der nächste Ton wartet.',
+  'event-kuenstler-rhein-neckar': 'Ein Event in der Region geplant?',
+  'event-kuenstler-rhein-main': 'Lassen Sie uns über Ihr Event sprechen.',
+};
+---
+<section class:list={['page-hero', `page-hero--${page.slug}`]}>
+  <div class="shell page-hero-grid">
+    <div class="page-hero-copy">{page.eyebrow && <span class="page-hero-eyebrow">{page.eyebrow}</span>}<h1>{page.title}</h1><p>{page.intro}</p><a class="button button-gold" href={page.slug === 'academy' ? 'mailto:info@bukkador-handpan.de?subject=Anfrage%20Handpan%20Academy' : path('/kontakt/')}>{page.slug === 'academy' ? 'Academy anfragen' : page.slug === 'eventagenturen' ? 'Briefing senden' : 'Event-Angebot anfragen'} <span aria-hidden="true">↗</span></a></div>
+    <div class="page-hero-media"><img src={path(page.image.src)} alt={page.image.alt} width="1600" height="900" style={page.image.position ? `object-position:${page.image.position}` : undefined} /></div>
+  </div>
+</section>
+<div class:list={['detail-rail', `detail-rail--${page.slug}`]}><div class="shell">{page.details.map((detail) => <span>{detail}</span>)}</div></div>
+{page.sections.map((section, index) => <EditorialSection section={section} reverse={index % 2 === 1} />)}
+{page.slug === 'referenzen' && <section class="events-list-section section-space"><div class="shell"><h2>Öffentliche Termine aus 2026</h2><div class="events-list">{listedEvents.map((event) => <div><strong>{event.title}</strong><span>{event.place}</span><time>{event.date}</time></div>)}</div></div></section>}
+{page.faqs && <FAQList items={page.faqs} />}
+<ClosingCTA title={closingTitles[page.slug] ?? 'Ein gutes Event beginnt mit einem Gespräch.'} text={page.closing} academy={page.slug === 'academy'} />

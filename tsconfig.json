@@ -1,0 +1,5 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": ["src", "sanity.config.ts", "sanity"],
+  "exclude": ["dist", "node_modules"]
+}
