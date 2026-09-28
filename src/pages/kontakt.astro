@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../content/site';
+const endpoint = import.meta.env.PUBLIC_EVENT_FORM_ENDPOINT ?? '';
+---
+<BaseLayout title="Event-Angebot anfragen" description="Prüfen Sie die Verfügbarkeit von Bukkador Handpan für Ihr Event. Mit wenigen Eckdaten erhalten Sie ein individuelles Angebot für Corporate Events, Hochzeiten und mehr.">
+  <div class="form-page"><section class="form-hero"><div class="shell"><h1>Erzählen Sie von Ihrem Event.</h1><p>Datum, Ort, Anlass und ein paar Wünsche reichen für den ersten Schritt. Michael Noll prüft die Verfügbarkeit und meldet sich persönlich.</p></div></section>
+  <section class="form-area"><div class="shell form-layout"><aside class="form-aside"><h2>Direkt. Persönlich. Klar.</h2><p>Sie bevorzugen den direkten Kontakt?</p><p><a href={`mailto:${site.email}`}>{site.email}</a><br /><a href={site.phoneHref}>{site.phone}</a></p><p>Ohne angebundenen Versanddienst öffnet das Formular einen vorbereiteten E-Mail-Entwurf. Bitte senden Sie ihn anschließend in Ihrem E-Mail-Programm ab.</p></aside>
+  <form class="event-form" id="event-form" data-endpoint={endpoint} novalidate>
+    <div class="field"><label for="name">Name *</label><input id="name" name="name" autocomplete="name" required /></div>
+    <div class="field"><label for="company">Unternehmen / Agentur</label><input id="company" name="company" autocomplete="organization" /></div>
+    <div class="field"><label for="email">E-Mail *</label><input id="email" name="email" type="email" autocomplete="email" required /></div>
+    <div class="field"><label for="phone">Telefon</label><input id="phone" name="phone" type="tel" autocomplete="tel" /></div>
+    <div class="field"><label for="eventType">Veranstaltungsart *</label><select id="eventType" name="eventType" required><option value="">Bitte wählen</option><option>Corporate Event</option><option>Firmenfeier</option><option>Gala / Empfang</option><option>Messe</option><option>Hochzeit</option><option>Eventagentur-Projekt</option><option>Sonstiges</option></select></div>
+    <div class="field"><label for="date">Veranstaltungsdatum</label><input id="date" name="date" type="date" /></div>
+    <div class="field"><label for="location">Veranstaltungsort *</label><input id="location" name="location" placeholder="Stadt oder Location" required /></div>
+    <div class="field"><label for="guests">Gästezahl</label><input id="guests" name="guests" type="number" min="1" placeholder="Ungefähr" /></div>
+    <div class="field"><label for="duration">Gewünschte Begleitung</label><select id="duration" name="duration"><option value="">Noch offen</option><option>Ca. 2 Stunden mit Sets und Pausen</option><option>Ca. 3 Stunden mit Sets und Pausen</option><option>Ca. 4 Stunden mit Sets und Pausen</option><option>Einzelner Programmpunkt</option></select></div>
+    <div class="field"><label for="budget">Budgetrahmen</label><select id="budget" name="budget"><option value="">Noch nicht festgelegt</option><option>Unter 1.000 €</option><option>1.000–2.000 €</option><option>2.000–4.000 €</option><option>Über 4.000 €</option></select></div>
+    <div class="field full"><label for="message">Was ist Ihnen für die Musik wichtig?</label><textarea id="message" name="message" placeholder="Ablauf, gewünschte Stimmung, besondere Wünsche …"></textarea></div>
+    <div class="honeypot" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off" /></div>
+    <div class="form-actions"><p class="consent">Mit dem Absenden werden Ihre Angaben zur Bearbeitung der Anfrage verwendet. Details stehen in der <a href="/datenschutz/">Datenschutzerklärung</a>.</p><button class="button button-gold" type="submit">Event-Angebot anfragen <span aria-hidden="true">↗</span></button><p class="form-status" id="form-status" role="status" aria-live="polite"></p></div>
+  </form></div></section></div>
+  <script>
+    const form = document.querySelector<HTMLFormElement>('#event-form');
+    const status = document.querySelector<HTMLElement>('#form-status');
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!form || !status) return;
+      status.classList.remove('error');
+      if (!form.reportValidity()) { status.textContent = 'Bitte ergänzen Sie die markierten Pflichtfelder.'; status.classList.add('error'); return; }
+      const values = Object.fromEntries(new FormData(form).entries());
+      if (values.website) return;
+      const endpoint = form.dataset.endpoint;
+      if (endpoint) {
+        const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+        if (button) button.disabled = true;
+        status.textContent = 'Ihre Anfrage wird gesendet …';
+        try {
+          const response = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(values) });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          form.reset();
+          status.textContent = 'Vielen Dank! Ihre Anfrage wurde übermittelt.';
+        } catch {
+          status.textContent = 'Der Versand hat nicht geklappt. Bitte schreiben Sie direkt an info@bukkador-handpan.de.';
+          status.classList.add('error');
+        } finally { if (button) button.disabled = false; }
+        return;
+      }
+      const labels: Record<string, string> = { name: 'Name', company: 'Unternehmen', email: 'E-Mail', phone: 'Telefon', eventType: 'Veranstaltungsart', date: 'Datum', location: 'Ort', guests: 'Gästezahl', duration: 'Begleitung', budget: 'Budgetrahmen', message: 'Nachricht' };
+      const body = Object.entries(labels).map(([key, label]) => `${label}: ${String(values[key] || '—')}`).join('\n');
+      const subject = `Event-Anfrage Bukkador – ${String(values.eventType)} – ${String(values.date || 'Termin offen')}`;
+      status.textContent = 'Ihr E-Mail-Programm wird geöffnet. Bitte senden Sie den vorbereiteten Entwurf dort ab.';
+      window.location.href = `mailto:info@bukkador-handpan.de?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  </script>
+</BaseLayout>

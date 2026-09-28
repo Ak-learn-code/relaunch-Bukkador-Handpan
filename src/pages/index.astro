@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FAQList from '../components/FAQList.astro';
+import ClosingCTA from '../components/ClosingCTA.astro';
+import { homeFaqs, images } from '../content/site';
+---
+<BaseLayout title="Bukkador Handpan – Live-Musik für besondere Events" description="Professionelle Handpan Live-Performance von Michael Noll für Corporate Events, Eventagenturen und Hochzeiten. Rhein-Neckar, Rhein-Main und deutschlandweit." image={images.instrument.src}>
+  <section class="home-hero">
+    <div class="shell home-hero-grid">
+      <div class="home-hero-copy"><h1>Ein Klang,<br />der bleibt.</h1><p>Handpan Live-Performance für Corporate Events, Hochzeiten und besondere Veranstaltungen.</p><a class="button button-gold" href="/kontakt/">Event-Angebot anfragen <span aria-hidden="true">↗</span></a><span class="minor">Rhein-Neckar · Rhein-Main · deutschlandweit</span></div>
+      <div class="home-hero-media"><img src={images.instrument.src} alt={images.instrument.alt} width="1600" height="1067" fetchpriority="high" /><span class="hero-note">Originalaufnahme aus dem Bukkador-Archiv</span></div>
+    </div>
+  </section>
+  <div class="detail-rail"><div class="shell"><span>Für Unternehmen & Agenturen</span><span>Mehrere Sets über 2–4 Stunden</span><span>Eigene Technik inklusive</span></div></div>
+  <section class="intro-band"><div class="shell intro-grid"><h2>Musik öffnet Räume.</h2><div><p>Ein Event lebt von den Momenten dazwischen: wenn Gäste ankommen, Gespräche beginnen und ein Raum seine eigene Stimmung findet. Bukkador gibt diesen Momenten einen unverwechselbaren Klang.</p><a class="text-link" href="/ueber-bukkador/">Michael Noll kennenlernen <span aria-hidden="true">↗</span></a></div></div></section>
+  <section class="feature-story"><div class="shell feature-story-grid"><div class="feature-story-image"><img src={images.artistWide.src} alt={images.artistWide.alt} width="1600" height="700" loading="lazy" decoding="async" /></div><div class="feature-story-content"><h2>Für Events mit Charakter.</h2><p>Ob Empfang, Gala, Messe oder Firmenfeier: Michael Noll gestaltet eine Live-Performance, die zum Ablauf und zur Atmosphäre Ihres Events passt. Instrumente, Soundsystem und Aufbau bringt Bukkador selbst mit.</p><a class="text-link" href="/corporate-events/">Corporate Events entdecken <span aria-hidden="true">↗</span></a></div></div></section>
+  <section class="split-links" aria-label="Weitere Angebote"><div class="split-link"><h2>Für Ihren besonderen Tag.</h2><p>Handpan-Musik für freie Trauung, Sektempfang und Dinner – persönlich abgestimmt mit Paar oder Wedding Planner.</p><a class="text-link" href="/hochzeiten/">Hochzeiten entdecken <span aria-hidden="true">↗</span></a></div><div class="split-link"><h2>Für starke Eventkonzepte.</h2><p>Ein eigenständiger Live-Act mit klarer Planung und eigener Technik für Agenturen und Veranstalter.</p><a class="text-link" href="/eventagenturen/">Für Eventagenturen <span aria-hidden="true">↗</span></a></div></section>
+  <section class="process-section"><div class="shell process-grid"><div><h2>Alles, was Ihr Event braucht.</h2><p>Ein hochwertiges Musikerlebnis, das sich einfach planen lässt.</p></div><div class="process-list"><article><span>01</span><div><h3>Ein gemeinsames Briefing</h3><p>Wir besprechen Anlass, Ablauf, Raum und die gewünschte Wirkung der Musik.</p></div></article><article><span>02</span><div><h3>Ein musikalisches Konzept</h3><p>Mehrere Performance-Sets über zwei bis vier Stunden lassen sich passend zum Event gestalten.</p></div></article><article><span>03</span><div><h3>Ein klarer Ansprechpartner</h3><p>Michael bringt Instrumente und MAUI-Soundsystem mit, übernimmt Auf- und Abbau und stimmt sich vor Ort ab.</p></div></article></div></div></section>
+  <section class="artist-band"><div class="artist-band-image"><img src={images.artistPortrait.src} alt={images.artistPortrait.alt} width="900" height="1046" loading="lazy" decoding="async" /></div><div class="artist-band-copy"><h2>Hinter dem Klang: Michael Noll.</h2><p>Handpan-Artist und Coach aus Worms. Mit Bukkador verbindet er die besondere Klangfarbe seiner Instrumente mit einer persönlichen, aufmerksamen Performance.</p><a class="text-link" href="/ueber-bukkador/">Über Bukkador <span aria-hidden="true">↗</span></a></div></section>
+  <FAQList items={homeFaqs} />
+  <ClosingCTA />
+</BaseLayout>

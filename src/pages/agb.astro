@@ -1,0 +1,7 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import terms from '../content/agb-legacy.json';
+---
+<BaseLayout title="Allgemeine Geschäftsbedingungen" description="Allgemeine Geschäftsbedingungen von Bukkador Handpan für Live-Auftritte und Handpan-Kurse.">
+  <article class="legal-page"><div class="shell"><h1>Allgemeine Geschäftsbedingungen</h1><p class="legal-note">Diese Fassung wurde aus der bisherigen Bukkador-Website übernommen. Stornierung, Haftung, Bildrechte und weitere Bedingungen sollten vor der öffentlichen Nutzung fachlich geprüft werden.</p>{terms.map((paragraph) => /^\d+\.\s/.test(paragraph) || paragraph === 'Haftung und Sorgfaltspflicht der Teilnehmenden' ? <h2>{paragraph}</h2> : <p>{paragraph}</p>)}</div></article>
+</BaseLayout>

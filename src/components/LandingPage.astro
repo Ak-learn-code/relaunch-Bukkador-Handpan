@@ -1,0 +1,20 @@
+---
+import type { SitePage } from '../content/site';
+import EditorialSection from './EditorialSection.astro';
+import FAQList from './FAQList.astro';
+import ClosingCTA from './ClosingCTA.astro';
+import { listedEvents } from '../content/site';
+interface Props { page: SitePage }
+const { page } = Astro.props;
+---
+<section class="page-hero">
+  <div class="shell page-hero-grid">
+    <div class="page-hero-copy"><h1>{page.title}</h1><p>{page.intro}</p><a class="button button-gold" href={page.slug === 'academy' ? 'mailto:info@bukkador-handpan.de?subject=Anfrage%20Handpan%20Academy' : '/kontakt/'}>{page.slug === 'academy' ? 'Academy anfragen' : 'Event-Angebot anfragen'} <span aria-hidden="true">↗</span></a></div>
+    <div class="page-hero-media"><img src={page.image.src} alt={page.image.alt} width="1600" height="900" style={page.image.position ? `object-position:${page.image.position}` : undefined} /></div>
+  </div>
+</section>
+<div class="detail-rail"><div class="shell">{page.details.map((detail) => <span>{detail}</span>)}</div></div>
+{page.sections.map((section, index) => <EditorialSection section={section} reverse={index % 2 === 1} />)}
+{page.slug === 'referenzen' && <section class="events-list-section section-space"><div class="shell"><h2>Öffentlich angekündigte Termine</h2><div class="events-list">{listedEvents.map((event) => <div><strong>{event.title}</strong><span>{event.place}</span><time>{event.date}</time></div>)}</div></div></section>}
+{page.faqs && <FAQList items={page.faqs} />}
+<ClosingCTA title={page.slug === 'academy' ? 'Der nächste Ton wartet.' : 'Ein gutes Event beginnt mit einem Gespräch.'} text={page.closing} academy={page.slug === 'academy'} />
