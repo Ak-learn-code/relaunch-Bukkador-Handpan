@@ -7,16 +7,18 @@ interface Props {
   description: string;
   image?: string;
   noindex?: boolean;
+  extraSchema?: Record<string, unknown>[];
 }
-const { title, description, image = '/images/michael-noll-wide.webp', noindex = false } = Astro.props;
+const { title, description, image = '/images/michael-noll-wide.webp', noindex = false, extraSchema = [] } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const path = (value: string) => `${base}${value.replace(/^\//, '')}`;
 const canonical = new URL(Astro.url.pathname, site.origin).toString();
-const socialImage = new URL(path(image), site.origin).toString();
-const isHome = Astro.url.pathname === '/';
+const socialImage = new URL(path(image.includes('/placeholders/') ? '/images/michael-noll-wide.webp' : image), site.origin).toString();
+const isHome = Astro.url.pathname === base;
 const structuredData = [
   { '@context': 'https://schema.org', '@type': 'WebSite', name: site.name, url: site.origin, inLanguage: 'de-DE' },
   { '@context': 'https://schema.org', '@type': 'Person', name: site.artist, alternateName: site.name, jobTitle: 'Handpan-Artist', url: site.origin, email: site.email, telephone: site.phone, address: { '@type': 'PostalAddress', addressLocality: 'Worms', addressCountry: 'DE' } },
+  ...extraSchema,
 ];
 ---
 <!doctype html>
@@ -28,7 +30,7 @@ const structuredData = [
     {noindex && <meta name="robots" content="noindex,follow" />}
     <title>{isHome ? title : `${title} | Bukkador Handpan`}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {!noindex && <link rel="canonical" href={canonical} />}
     <link rel="icon" type="image/png" href={path('/images/Original-Logo-Symbol.png')} />
     <link rel="preload" href={path('/fonts/montserrat-latin.woff2')} as="font" type="font/woff2" crossorigin />
     <meta property="og:type" content="website" />
@@ -57,7 +59,6 @@ const structuredData = [
           <summary aria-label="Menü"><span></span><span></span><span class="sr-only">Menü</span></summary>
           <nav aria-label="Mobile Navigation">
             {navigation.map((item) => <a href={path(item.href)} aria-current={Astro.url.pathname === item.href ? 'page' : undefined}>{item.label}</a>)}
-            <a href={path('/referenzen/')}>Events & Einblicke</a>
             <a href={path('/kontakt/')}>Event anfragen</a>
           </nav>
         </details>
@@ -74,7 +75,7 @@ const structuredData = [
           <p>Handpan Live-Musik von Michael Noll.<br />Aus Worms. Für besondere Events überall in Deutschland.</p>
         </div>
         <div class="footer-links">
-          <div><strong>Entdecken</strong><a href={path('/corporate-events/')}>Corporate Events</a><a href={path('/hochzeiten/')}>Hochzeiten</a><a href={path('/eventagenturen/')}>Eventagenturen</a><a href={path('/referenzen/')}>Events & Einblicke</a></div>
+          <div><strong>Entdecken</strong><a href={path('/corporate-events/')}>Corporate Events</a><a href={path('/hochzeiten/')}>Hochzeiten</a><a href={path('/eventagenturen/')}>Eventagenturen</a><a href={path('/referenzen/')}>Referenzen & Events</a></div>
           <div><strong>Bukkador</strong><a href={path('/ueber-bukkador/')}>Über Michael</a><a href={path('/academy/')}>Academy</a><a href={path('/event-kuenstler-rhein-neckar/')}>Rhein-Neckar</a><a href={path('/event-kuenstler-rhein-main/')}>Rhein-Main</a></div>
           <div><strong>Kontakt</strong><a href={path('/kontakt/')}>Event-Angebot anfragen</a><a href={`mailto:${site.email}`}>{site.email}</a><a href={site.phoneHref}>{site.phone}</a></div>
         </div>

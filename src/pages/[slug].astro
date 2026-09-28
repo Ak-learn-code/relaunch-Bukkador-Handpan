@@ -1,12 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LandingPage from '../components/LandingPage.astro';
-import { pages } from '../content/site';
-import { getPage } from '../lib/sanity';
+import { pages, site } from '../content/site';
+import { getPage, getApprovedReferences } from '../lib/sanity';
 import type { GetStaticPaths } from 'astro';
 
 export const getStaticPaths = (() => pages.map((page) => ({ params: { slug: page.slug }, props: { fallback: page } }))) satisfies GetStaticPaths;
 const { fallback } = Astro.props;
 const page = await getPage(fallback.slug, fallback);
+const references = page.slug === 'referenzen' ? await getApprovedReferences() : [];
+const isService = ['corporate-events', 'hochzeiten', 'eventagenturen', 'event-kuenstler-rhein-neckar', 'event-kuenstler-rhein-main'].includes(page.slug);
+const extraSchema = isService ? [{ '@context': 'https://schema.org', '@type': 'Service', name: page.seoTitle ?? page.title, description: page.description, serviceType: 'Handpan Live-Performance', provider: { '@type': 'Person', name: site.artist }, areaServed: { '@type': 'Country', name: 'Deutschland' }, url: new URL(`${import.meta.env.BASE_URL}${page.slug}/`, site.origin).toString() }] : [];
 ---
-<BaseLayout title={page.title} description={page.description} image={page.image.src}><LandingPage page={page} /></BaseLayout>
+<BaseLayout title={page.seoTitle ?? page.title} description={page.description} image={page.image.src} extraSchema={extraSchema}><LandingPage page={page} references={references} /></BaseLayout>

@@ -1,0 +1,12 @@
+name = "bukkador-event-leads"
+main = "lead-worker.mjs"
+compatibility_date = "2026-09-28"
+
+[vars]
+ALLOWED_ORIGIN = "https://ak-learn-code.github.io"
+FROM_EMAIL = "Bukkador <anfragen@YOUR_VERIFIED_DOMAIN>"
+TO_EMAIL = "info@bukkador-handpan.de"
+
+[[kv_namespaces]]
+binding = "LEADS"
+id = "YOUR_KV_NAMESPACE_ID"

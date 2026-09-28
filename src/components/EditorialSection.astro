@@ -3,10 +3,11 @@ import type { ContentSection } from '../content/site';
 interface Props { section: ContentSection; reverse?: boolean }
 const { section, reverse = false } = Astro.props;
 const path = (value: string) => `${import.meta.env.BASE_URL}${value.replace(/^\//, '')}`;
+const srcSet = (src: string, width: number) => `${path(src.replace('.webp', '-800.webp'))} 800w, ${path(src)} ${width}w`;
 ---
 <section class:list={['editorial-section', 'section-space', section.tone ?? 'light', { reverse }]}>
   <div class="shell editorial-grid">
     <div class="editorial-copy"><h2>{section.title}</h2><p>{section.text}</p>{section.points && <ul class="line-list">{section.points.map((point) => <li>{point}</li>)}</ul>}</div>
-    {section.image && <div class="editorial-image"><img src={path(section.image.src)} alt={section.image.alt} loading="lazy" decoding="async" width="1200" height="800" style={section.image.position ? `object-position:${section.image.position}` : undefined} /></div>}
+    {section.image && <div class="editorial-image"><!-- TODO: Replace concept images with real Bukkador photography --><img src={path(section.image.src)} srcset={section.image.concept ? srcSet(section.image.src, section.image.width ?? 1600) : undefined} sizes="(max-width: 700px) 100vw, 50vw" alt={section.image.alt} data-placeholder={section.image.concept ? 'concept' : undefined} loading="lazy" decoding="async" width={section.image.width ?? 1200} height={section.image.height ?? 800} style={`--image-position:${section.image.position ?? 'center'};--image-mobile-position:${section.image.mobilePosition ?? section.image.position ?? 'center'}`} />{section.image.concept && <span class="concept-note">Konzeptbild · keine Bukkador-Referenz</span>}</div>}
   </div>
 </section>

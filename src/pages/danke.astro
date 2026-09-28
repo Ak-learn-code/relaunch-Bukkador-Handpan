@@ -1,0 +1,7 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const path = (value: string) => `${import.meta.env.BASE_URL}${value.replace(/^\//, '')}`;
+---
+<BaseLayout title="Vielen Dank für Ihre Anfrage" description="Ihre Event-Anfrage an Bukkador wurde übermittelt." noindex>
+  <section class="thank-you section-space"><div class="shell"><h1>Vielen Dank für Ihre Anfrage.</h1><p>Ihre Angaben wurden übermittelt. Michael Noll meldet sich persönlich bei Ihnen.</p><a class="button button-gold" href={path('/')}>Zur Startseite <span aria-hidden="true">↗</span></a></div></section>
+</BaseLayout>

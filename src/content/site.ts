@@ -1,4 +1,4 @@
-export type ImageAsset = { src: string; alt: string; position?: string };
+export type ImageAsset = { src: string; alt: string; position?: string; mobilePosition?: string; concept?: boolean; width?: number; height?: number };
 export type ContentSection = {
   title: string;
   text: string;
@@ -11,6 +11,7 @@ export type SitePage = {
   slug: string;
   label: string;
   title: string;
+  seoTitle?: string;
   eyebrow?: string;
   description: string;
   intro: string;
@@ -19,6 +20,7 @@ export type SitePage = {
   sections: ContentSection[];
   faqs?: FAQ[];
   closing: string;
+  cta?: string;
 };
 
 export const site = {
@@ -35,15 +37,24 @@ export const navigation = [
   { label: 'Hochzeiten', href: '/hochzeiten/' },
   { label: 'Eventagenturen', href: '/eventagenturen/' },
   { label: 'Über Bukkador', href: '/ueber-bukkador/' },
-  { label: 'Academy', href: '/academy/' },
+  { label: 'Referenzen', href: '/referenzen/' },
 ];
 
 export const images = {
-  instrument: { src: '/images/handpan-closeup.webp', alt: 'Nahaufnahme einer Handpan im warmen Licht' },
-  artistWide: { src: '/images/michael-noll-wide.webp', alt: 'Handpan-Artist Michael Noll mit Instrument vor einer Holzwand', position: '72% center' },
-  artistPortrait: { src: '/images/michael-noll-portrait.webp', alt: 'Michael Noll spielt Handpan im Freien' },
-  lesson: { src: '/images/handpan-lesson.webp', alt: 'Michael Noll im Handpan-Unterricht mit einer Teilnehmerin' },
-  workshop: { src: '/images/handpan-workshop.webp', alt: 'Michael Noll zeigt zwei Teilnehmenden das Handpan-Spiel' },
+  instrument: { src: '/images/handpan-closeup.webp', alt: 'Nahaufnahme einer Handpan im warmen Licht', width: 1600, height: 1067 },
+  artistWide: { src: '/images/michael-noll-wide.webp', alt: 'Handpan-Artist Michael Noll mit Instrument vor einer Holzwand', position: '72% center', width: 1600, height: 584 },
+  artistPortrait: { src: '/images/michael-noll-portrait.webp', alt: 'Michael Noll spielt Handpan im Freien', width: 900, height: 1046 },
+  lesson: { src: '/images/handpan-lesson.webp', alt: 'Michael Noll im Handpan-Unterricht mit einer Teilnehmerin', width: 1200, height: 723 },
+  workshop: { src: '/images/handpan-workshop.webp', alt: 'Michael Noll zeigt zwei Teilnehmenden das Handpan-Spiel', width: 1200, height: 800 },
+  homeEvent: { src: '/images/placeholders/home-hero-event.webp', alt: 'Konzeptmotiv: Handpan-Performance mit Gästen bei einem Abendempfang', mobilePosition: '62% center', concept: true, width: 1920, height: 1080 },
+  corporateReception: { src: '/images/placeholders/corporate-reception.webp', alt: 'Konzeptmotiv: Handpan-Artist und Gäste bei einem Firmenempfang', mobilePosition: '45% center', concept: true, width: 1600, height: 1067 },
+  corporateDinner: { src: '/images/placeholders/corporate-dinner.webp', alt: 'Konzeptmotiv: Handpan-Performance bei einem Dinner-Event', position: '85% center', mobilePosition: '100% center', concept: true, width: 1600, height: 1067 },
+  corporateDetail: { src: '/images/placeholders/corporate-detail.webp', alt: 'Konzeptmotiv: Hände an einer Handpan im warmen Eventlicht', mobilePosition: '35% center', concept: true, width: 1600, height: 1067 },
+  agencyBackstage: { src: '/images/placeholders/agency-backstage.webp', alt: 'Konzeptmotiv: Handpan-Artist bereitet eine Performance mit eigener Technik vor', position: '68% center', mobilePosition: '68% center', concept: true, width: 1600, height: 1067 },
+  weddingCeremony: { src: '/images/placeholders/wedding-ceremony.webp', alt: 'Konzeptmotiv: Handpan-Artist begleitet eine freie Trauung im Garten', position: '35% center', mobilePosition: '20% center', concept: true, width: 1600, height: 1067 },
+  weddingReception: { src: '/images/placeholders/wedding-reception.webp', alt: 'Konzeptmotiv: Handpan-Musik begleitet Gespräche bei einem Sektempfang', mobilePosition: '52% center', concept: true, width: 1600, height: 1067 },
+  weddingDinner: { src: '/images/placeholders/wedding-dinner.webp', alt: 'Konzeptmotiv: Handpan-Performance neben einer gedeckten Hochzeitstafel', position: '0% center', mobilePosition: '12% center', concept: true, width: 1600, height: 1067 },
+  eventAtmosphere: { src: '/images/placeholders/event-atmosphere.webp', alt: 'Konzeptmotiv: Handpan-Performance mit Gästen in einem warm beleuchteten Raum', mobilePosition: '38% center', concept: true, width: 1920, height: 1080 },
 } satisfies Record<string, ImageAsset>;
 
 export const homeFaqs: FAQ[] = [
@@ -57,43 +68,45 @@ export const homeFaqs: FAQ[] = [
 export const pages: SitePage[] = [
   {
     slug: 'corporate-events', label: 'Corporate Events',
-    title: 'Handpan für Corporate Events.', eyebrow: 'Live-Musik für Unternehmen',
+    title: 'Handpan Live-Musik für Corporate Events', seoTitle: 'Handpan Live-Musik für Firmenfeiern & Corporate Events', eyebrow: 'Live-Musik für Unternehmen',
     description: 'Bukkador Handpan begleitet Firmenveranstaltungen, Empfänge, Messen und Galas mit professioneller Live-Musik. Rhein-Neckar, Rhein-Main und deutschlandweit.',
-    intro: 'Ein besonderer Klang schafft Raum für Begegnung. Michael Noll gestaltet mit der Handpan musikalische Momente, die Ihren Event tragen – präsent, wenn sie wirken sollen, und zurückhaltend, wenn Gespräche im Mittelpunkt stehen.',
-    image: images.artistWide,
+    intro: 'Ein außergewöhnlicher Live-Act für Empfänge, Firmenfeiern, Galas, Messen und Dinner-Events. Michael Noll stimmt die Performance auf Atmosphäre, Raum und Ablauf ab.',
+    image: images.corporateReception,
     details: ['Empfang · Dinner · Messe · Gala', 'Eigene Tontechnik', 'Rhein-Neckar · Rhein-Main · deutschlandweit'],
     sections: [
-      { title: 'Musik, die Ihren Ablauf versteht.', text: 'Ob Ankommen, Networking, Dinner oder ein bewusst gesetzter Programmpunkt: Die Performance wird auf Atmosphäre, Raum und Zeitplan abgestimmt. Mehrere Sets über zwei bis vier Stunden können einen ganzen Veranstaltungsabschnitt musikalisch verbinden.', image: images.instrument },
+      { title: 'Musik, die Ihren Ablauf versteht.', text: 'Ob Ankommen, Networking, Dinner oder ein bewusst gesetzter Programmpunkt: Die Performance wird auf Atmosphäre, Raum und Zeitplan abgestimmt. Mehrere Sets über zwei bis vier Stunden können einen ganzen Veranstaltungsabschnitt musikalisch verbinden.', image: images.corporateDinner },
       { title: 'Eine unkomplizierte Komplettlösung.', text: 'Für die Planung zählt Verlässlichkeit. Bukkador bringt Instrumente und ein eigenes MAUI-Soundsystem mit, übernimmt Auf- und Abbau und stimmt alle relevanten Details mit Ihnen oder Ihrer Agentur ab.', points: ['Individuelle Abstimmung vor dem Event', 'Eigene Instrumente und Tontechnik', 'Mehrere Performance-Sets mit Pausen', 'Deutschlandweit buchbar'], tone: 'green' },
-      { title: 'Für Momente, die in Erinnerung bleiben.', text: 'Die Handpan verbindet einen unverwechselbaren Klang mit einer ruhigen, offenen Präsenz. So entsteht ein Live-Erlebnis, das hochwertige Veranstaltungen bereichert, ohne ihren Charakter zu überdecken.', image: images.artistPortrait },
+      { title: 'Für Momente, die in Erinnerung bleiben.', text: 'Die Handpan verbindet einen unverwechselbaren Klang mit einer ruhigen, offenen Präsenz. So entsteht ein Live-Erlebnis, das hochwertige Veranstaltungen bereichert, ohne ihren Charakter zu überdecken.', image: images.corporateDetail },
     ],
     faqs: [homeFaqs[1], homeFaqs[2], homeFaqs[4]],
     closing: 'Erzählen Sie uns von Ihrem Event. Gemeinsam finden wir den passenden musikalischen Rahmen.',
+    cta: 'Corporate Event anfragen',
   },
   {
     slug: 'hochzeiten', label: 'Hochzeiten',
-    title: 'Ein Klang für Ihren Tag.', eyebrow: 'Handpan Live-Musik für Hochzeiten',
+    title: 'Handpan Live-Musik für besondere Hochzeiten.', seoTitle: 'Handpan Hochzeit: Live-Musik für Trauung & Sektempfang', eyebrow: 'Für Paare & Wedding Planner',
     description: 'Handpan-Musik von Bukkador für freie Trauung, Sektempfang und Dinner. Persönlich geplant für Brautpaare, Wedding Planner und Locations.',
     intro: 'Manche Augenblicke brauchen keine große Geste. Die warmen, sphärischen Klänge der Handpan geben einer Hochzeit eine besondere Atmosphäre – bei der freien Trauung, zum Empfang oder als musikalischer Faden durch das Dinner.',
-    image: images.artistPortrait,
+    image: images.weddingCeremony,
     details: ['Freie Trauung · Empfang · Dinner', 'Für Paare & Wedding Planner', 'Eigene Technik'],
     sections: [
-      { title: 'Ein Klang für Ihren Moment.', text: 'Michael Noll gestaltet die Musik passend zum Ablauf und zur Stimmung Ihrer Feier. Die Handpan kann einen stillen Moment betonen, Gäste beim Ankommen begleiten oder einem Empfang eine unverwechselbare Note geben.', image: images.instrument },
+      { title: 'Ein Klang für Ihren Moment.', text: 'Michael Noll gestaltet die Musik passend zum Ablauf und zur Stimmung Ihrer Feier. Die Handpan kann einen stillen Moment betonen, Gäste beim Ankommen begleiten oder einem Empfang eine unverwechselbare Note geben.', image: images.weddingReception },
       { title: 'Einfach zu planen. Schön zu erleben.', text: 'Ob direkt mit dem Paar, einer Hochzeitsplanung oder der Location: Vorab klären wir Ablauf, Spielorte und die technischen Bedingungen. Instrumente und eigenes Soundsystem bringt Bukkador mit; Auf- und Abbau sind Teil der Vorbereitung.', points: ['Persönliche Abstimmung', 'Indoor oder Outdoor nach Absprache', 'Mehrere musikalische Sets möglich', 'Technik und Aufbau inklusive'], tone: 'green' },
-      { title: 'Von der Trauung bis zum Ausklang.', text: 'Einzelne Höhepunkte oder eine längere Begleitung über mehrere Veranstaltungsphasen sind möglich. Das konkrete Konzept entsteht aus Ihrem Tag – nicht aus einem starren Stundenpaket.', image: images.artistWide },
+      { title: 'Von der Trauung bis zum Ausklang.', text: 'Einzelne Höhepunkte oder eine längere Begleitung über mehrere Veranstaltungsphasen sind möglich. Das konkrete Konzept entsteht aus Ihrem Tag – nicht aus einem starren Stundenpaket.', image: images.weddingDinner },
     ],
     faqs: [
       { question: 'Kann Bukkador Trauung und Empfang begleiten?', answer: 'Ja. Je nach Ablauf können einzelne Momente oder mehrere Phasen musikalisch gestaltet werden. Die Details klären wir vorab.' },
       homeFaqs[2], homeFaqs[4],
     ],
     closing: 'Teilen Sie Datum, Ort und Ihre Ideen mit. Bukkador erstellt ein individuelles Angebot für Ihren Tag.',
+    cta: 'Hochzeit unverbindlich anfragen',
   },
   {
     slug: 'eventagenturen', label: 'Eventagenturen',
-    title: 'Ein Live-Act, der mitdenkt.', eyebrow: 'Für Eventagenturen',
+    title: 'Ein Live-Act, auf den Sie sich verlassen können.', seoTitle: 'Handpan Live-Act für Eventagenturen', eyebrow: 'Für Eventagenturen',
     description: 'Bukkador Handpan als professioneller Live-Act für Eventagenturen: individuelle Performance, eigene Technik und direkte Abstimmung – deutschlandweit.',
-    intro: 'Sie planen Erlebnisse, die stimmig sein müssen. Bukkador ergänzt Ihr Konzept mit einem eigenständigen musikalischen Format – für Corporate Events, Empfänge, Messen, Galas und besondere Inszenierungen.',
-    image: images.instrument,
+    intro: 'Bukkador unterstützt Eventagenturen mit direkter Kommunikation, eigener Technik und flexiblen Performance-Konzepten – abgestimmt auf Ihr Briefing und Ihre Produktion.',
+    image: images.agencyBackstage,
     details: ['Direkte Abstimmung', 'Technik aus einer Hand', 'Deutschlandweit buchbar'],
     sections: [
       { title: 'Ein Format mit Spielraum.', text: 'Dezente Atmosphäre beim Empfang, akzentuierte Live-Momente oder mehrere Sets über einen Veranstaltungsabschnitt: Die Handpan-Performance lässt sich in unterschiedliche Dramaturgien integrieren.', image: images.artistWide },
@@ -102,6 +115,7 @@ export const pages: SitePage[] = [
     ],
     faqs: [homeFaqs[1], homeFaqs[2], homeFaqs[3]],
     closing: 'Senden Sie Ihr Briefing oder fragen Sie die Verfügbarkeit für ein kommendes Event an.',
+    cta: 'Bukkador für Ihre Produktion anfragen',
   },
   {
     slug: 'ueber-bukkador', label: 'Über Bukkador',
@@ -112,22 +126,24 @@ export const pages: SitePage[] = [
     details: ['Handpan-Artist & Coach', 'Aus Worms', 'Live-Musik & Academy'],
     sections: [
       { title: 'Klang mit Persönlichkeit.', text: 'Die Handpan hat viele Klangfarben. Michael Noll nutzt unterschiedliche Instrumente und Scales, um eine Atmosphäre zu schaffen, die zum Anlass passt. Mal wird die Musik zum Mittelpunkt, mal trägt sie den Moment im Hintergrund.', image: images.instrument },
-      { title: 'Zwei Seiten einer Leidenschaft.', text: 'Bukkador verbindet Live-Performances mit der Freude am Weitergeben. In der Academy bietet Michael Noll Handpan-Unterricht und Workshops für Anfänger und Fortgeschrittene an. Die Event-Performance bleibt der klare Schwerpunkt dieser Website.', image: images.lesson, tone: 'green' },
+      { title: 'Für Events vorbereitet.', text: 'Vor einem Auftritt stimmt Michael Anlass, Ablauf, Spielort und Technik ab. Handpans und eigenes MAUI-Soundsystem bringt er mit; Aufbau und Soundcheck sind Teil seiner Vorbereitung.', image: images.artistWide, tone: 'green' },
+      { title: 'Die Academy als eigener Weg.', text: 'Neben Live-Performances gibt Michael seine Faszination für die Handpan in Schnupperkursen, Einzelunterricht und Workshops weiter.', image: images.lesson },
     ],
     closing: 'Lernen Sie Bukkador für Ihre Veranstaltung kennen.',
   },
   {
-    slug: 'referenzen', label: 'Events & Einblicke',
-    title: 'Bukkador live erleben', eyebrow: 'Events & Einblicke',
+    slug: 'referenzen', label: 'Referenzen',
+    title: 'Referenzen & Events', eyebrow: 'Bukkador live',
     description: 'Einblicke in das bisherige Veranstaltungsprogramm von Bukkador Handpan und die musikalischen Einsatzmöglichkeiten für Events.',
     intro: 'Live-Musik lässt sich am besten erleben. Hier finden Sie öffentlich angekündigte Termine aus dem Bukkador-Veranstaltungskalender und Einblicke in Michaels Arbeit.',
-    image: images.artistWide,
-    details: ['Öffentliche Termine aus 2026', 'Einblicke in Michaels Arbeit', 'Live-Musik für Ihr Event'],
+    image: images.eventAtmosphere,
+    details: ['Ausgewählte Veranstaltungen', 'Event-Impressionen', 'Öffentliche Termine'],
     sections: [
       { title: 'Aus dem Kalender.', text: 'Wormser Kulturnacht, Open Stage im KulturGUT Bechtolsheim, Hofkonzert in Offstein und Handwerkermarkt Franklin in Mannheim: Diese öffentlich angekündigten Termine aus 2026 zeigen, wie unterschiedlich der Rahmen für Handpan-Musik sein kann.', image: images.artistPortrait },
       { title: 'Live statt Inszenierung.', text: 'Die Musik von Michael Noll entsteht im direkten Kontakt mit Raum und Publikum. Die Bilder auf dieser Seite zeigen den Künstler und sein Instrument. Welche Atmosphäre Bukkador für Ihr Event schaffen kann, besprechen wir am besten persönlich.', image: images.instrument, tone: 'green' },
     ],
     closing: 'Sie möchten Bukkador für Ihre Veranstaltung buchen? Senden Sie uns Ihre Eckdaten.',
+    cta: 'Event-Verfügbarkeit prüfen',
   },
   {
     slug: 'academy', label: 'Academy',
@@ -145,9 +161,9 @@ export const pages: SitePage[] = [
   },
   {
     slug: 'event-kuenstler-rhein-neckar', label: 'Rhein-Neckar',
-    title: 'Ein Klang für Rhein-Neckar.', eyebrow: 'Live-Musik aus Worms',
+    title: 'Ein Klang für Rhein-Neckar.', seoTitle: 'Event-Künstler Rhein-Neckar: Handpan Live-Musik', eyebrow: 'Live-Musik aus Worms',
     description: 'Bukkador Handpan aus Worms für Corporate Events, Empfänge und Hochzeiten in der Rhein-Neckar-Region – mit eigener Technik und individueller Planung.',
-    intro: 'Rund um Mannheim, Heidelberg, Ludwigshafen und Worms begleitet Bukkador Veranstaltungen mit Handpan-Live-Musik. Die regionale Nähe macht die Abstimmung einfach; das musikalische Konzept bleibt individuell.',
+    intro: 'Von Worms aus ist Bukkador für Veranstaltungen in Mannheim, Heidelberg, Ludwigshafen, Speyer und Weinheim ansprechbar. Die regionale Nähe erleichtert Vorgespräche und Ortsabstimmung; das musikalische Konzept richtet sich nach Ihrem Event.',
     image: images.instrument,
     details: ['Mannheim · Heidelberg · Worms', 'Corporate & Hochzeit', 'Eigene Technik'],
     sections: [
@@ -155,12 +171,13 @@ export const pages: SitePage[] = [
       { title: 'Planung ohne Umwege.', text: 'Bukkador bringt Instrumente und eigenes MAUI-Soundsystem mit und übernimmt Auf- und Abbau. Für längere Veranstaltungen sind mehrere Sets über zwei bis vier Stunden möglich. Sprechen Sie Ort, Gästezahl und gewünschte Atmosphäre frühzeitig an.', points: ['Startpunkt Worms', 'Für Mannheim, Heidelberg und Umgebung', 'Direkte Abstimmung mit Michael Noll'], tone: 'green' },
     ],
     closing: 'Prüfen Sie die Verfügbarkeit für Ihr Event in Rhein-Neckar.',
+    cta: 'Verfügbarkeit in der Region prüfen',
   },
   {
     slug: 'event-kuenstler-rhein-main', label: 'Rhein-Main',
-    title: 'Live-Momente in Rhein-Main.', eyebrow: 'Handpan für Events',
+    title: 'Live-Momente in Rhein-Main.', seoTitle: 'Event-Künstler Rhein-Main: Handpan Live-Musik', eyebrow: 'Handpan für Events',
     description: 'Bukkador Handpan für Corporate Events, Galas, Empfänge und Hochzeiten im Rhein-Main-Gebiet. Aus Worms, mit eigener Technik und deutschlandweit buchbar.',
-    intro: 'Für Veranstaltungen in Frankfurt, Mainz, Wiesbaden und dem Rhein-Main-Gebiet bietet Bukkador eine eigenständige musikalische Note. Die Performance fügt sich in anspruchsvolle Eventabläufe ein – vom Empfang bis zum Dinner.',
+    intro: 'Für Veranstaltungen in Frankfurt, Mainz, Wiesbaden, Darmstadt und Offenbach bietet Bukkador eine eigenständige musikalische Note. Bei größeren Eventproduktionen werden Anreise, Timing und technische Schnittstellen früh abgestimmt.',
     image: images.artistPortrait,
     details: ['Frankfurt · Mainz · Wiesbaden', 'Für Agenturen & Veranstalter', 'Komplettlösung'],
     sections: [
@@ -168,6 +185,7 @@ export const pages: SitePage[] = [
       { title: 'Technik und Musik aus einer Hand.', text: 'Handpans, eigenes Soundsystem sowie Auf- und Abbau gehören zur Planung. So bleibt für Veranstalter und Agenturen ein klarer Ansprechpartner. Buchungen sind auch über Rhein-Main hinaus in ganz Deutschland möglich.', points: ['Frankfurt, Mainz und Wiesbaden', 'Flexible Sets für Empfang und Dinner', 'Direkter Ansprechpartner vor Ort'], tone: 'green' },
     ],
     closing: 'Erzählen Sie uns von Ihrem Event in Rhein-Main.',
+    cta: 'Verfügbarkeit in der Region prüfen',
   },
 ];
 

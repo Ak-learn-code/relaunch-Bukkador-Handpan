@@ -9,6 +9,7 @@
     "preview": "astro preview",
     "typecheck": "astro check",
     "lint": "eslint .",
+    "test": "node --test api/*.test.mjs",
     "studio": "sanity dev",
     "studio:build": "sanity build"
   },

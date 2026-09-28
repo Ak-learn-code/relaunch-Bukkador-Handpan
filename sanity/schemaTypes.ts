@@ -40,9 +40,15 @@ const event = defineType({ name: 'event', title: 'Event / Termin', type: 'docume
 
 const reference = defineType({ name: 'reference', title: 'Referenz', type: 'document', fields: [
   defineField({ name: 'title', title: 'Name / Veranstaltung', type: 'string', validation: (Rule) => Rule.required() }),
-  defineField({ name: 'context', title: 'Anlass', type: 'string' }),
-  defineField({ name: 'description', title: 'Beschreibung', type: 'text' }),
+  defineField({ name: 'eventType', title: 'Veranstaltungsart', type: 'string' }),
+  defineField({ name: 'place', title: 'Ort', type: 'string' }),
+  defineField({ name: 'date', title: 'Datum (optional)', type: 'date' }),
+  defineField({ name: 'occasion', title: 'Herausforderung / Anlass', type: 'text' }),
+  defineField({ name: 'performanceConcept', title: 'Performance-Konzept', type: 'text' }),
+  defineField({ name: 'flow', title: 'Ablauf', type: 'text' }),
+  defineField({ name: 'testimonial', title: 'Freigegebenes Zitat', type: 'reference', to: [{ type: 'testimonial' }] }),
   imageField('image', 'Bild'),
+  defineField({ name: 'gallery', title: 'Galerie', type: 'array', of: [{ type: 'image', options: { hotspot: true }, fields: [defineField({ name: 'alt', title: 'Alternativtext', type: 'string' })] }] }),
   defineField({ name: 'permissionConfirmed', title: 'Nutzungsrecht / Freigabe bestätigt', type: 'boolean', initialValue: false }),
   defineField({ name: 'visible', title: 'Öffentlich anzeigen', type: 'boolean', initialValue: false, validation: (Rule) => Rule.custom((visible, context) => visible && !((context.parent as {permissionConfirmed?: boolean})?.permissionConfirmed) ? 'Vor Veröffentlichung muss die Freigabe bestätigt sein.' : true) }),
 ] });

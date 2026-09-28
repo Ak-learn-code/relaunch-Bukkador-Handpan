@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-Disallow: /reference/
-Sitemap: https://bukkador-handpan.de/sitemap-index.xml
+Sitemap: https://ak-learn-code.github.io/relaunch-Bukkador-Handpan/sitemap-index.xml

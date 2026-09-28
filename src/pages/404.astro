@@ -1,0 +1,7 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const path = (value: string) => `${import.meta.env.BASE_URL}${value.replace(/^\//, '')}`;
+---
+<BaseLayout title="Seite nicht gefunden" description="Die gesuchte Seite wurde nicht gefunden." noindex>
+  <section class="thank-you section-space"><div class="shell"><h1>Diese Seite gibt es nicht.</h1><p>Vielleicht führt Sie einer unserer Einstiege zum passenden Angebot.</p><a class="button button-gold" href={path('/')}>Zur Startseite <span aria-hidden="true">↗</span></a></div></section>
+</BaseLayout>

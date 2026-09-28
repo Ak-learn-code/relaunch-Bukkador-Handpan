@@ -1,5 +1,6 @@
 import { createClient } from '@sanity/client';
 import type { SitePage, ContentSection, FAQ } from '../content/site';
+import type { CaseData } from '../components/CaseStudy.astro';
 
 const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
 const dataset = import.meta.env.PUBLIC_SANITY_DATASET || 'production';
@@ -14,7 +15,7 @@ export const pageQuery = `*[_type == "page" && slug.current == $slug][0]{
   "faqs": faqs[]->{"question": question, "answer": answer}
 }`;
 export const eventsQuery = `*[_type == "event" && visible == true] | order(date desc){title, place, date, description, "imageUrl": image.asset->url}`;
-export const referencesQuery = `*[_type == "reference" && visible == true]{title, context, description, "imageUrl": image.asset->url}`;
+export const referencesQuery = `*[_type == "reference" && visible == true && permissionConfirmed == true] | order(date desc){title, eventType, place, date, occasion, performanceConcept, flow, "image": {"src": image.asset->url, "alt": image.alt}, "testimonial": testimonial->{quote, person, role, permissionConfirmed}, "gallery": gallery[]{"src": asset->url, alt}}`;
 export const settingsQuery = `*[_type == "siteSettings"][0]{siteTitle, contactEmail, contactPhone, defaultSeo}`;
 export const navigationQuery = `*[_type == "navigation"][0]{items[]{label, href}}`;
 export const offersQuery = `*[_type == "performanceOffer"] | order(order asc){title, description, duration, features}`;
@@ -51,5 +52,22 @@ export async function getPage(slug: string, fallback: SitePage): Promise<SitePag
   } catch (error) {
     console.warn(`Sanity-Seite ${slug} nicht verfügbar; lokale Inhalte werden verwendet.`, error);
     return fallback;
+  }
+}
+
+export async function getApprovedReferences(): Promise<CaseData[]> {
+  if (!sanityClient) return [];
+  try {
+    const records = await sanityClient.fetch<Array<Partial<CaseData> & { performanceConcept?: string; testimonial?: { quote?: string; person?: string; role?: string; permissionConfirmed?: boolean } }>>(referencesQuery);
+    return records.filter((item) => item.title && item.eventType && item.occasion && item.performanceConcept).map((item) => ({
+      title: item.title!, eventType: item.eventType!, place: item.place, date: item.date,
+      occasion: item.occasion!, concept: item.performanceConcept!, flow: item.flow,
+      image: item.image?.src ? item.image : undefined,
+      gallery: item.gallery,
+      testimonial: item.testimonial?.permissionConfirmed && item.testimonial.quote ? { quote: item.testimonial.quote, attribution: [item.testimonial.person, item.testimonial.role].filter(Boolean).join(' · ') } : undefined,
+    }));
+  } catch (error) {
+    console.warn('Freigegebene Referenzen nicht verfügbar.', error);
+    return [];
   }
 }

@@ -3,11 +3,14 @@ import type { SitePage } from '../content/site';
 import EditorialSection from './EditorialSection.astro';
 import FAQList from './FAQList.astro';
 import ClosingCTA from './ClosingCTA.astro';
-import { listedEvents } from '../content/site';
-interface Props { page: SitePage }
-const { page } = Astro.props;
-const base = import.meta.env.BASE_URL;
-const path = (value: string) => `${base}${value.replace(/^\//, '')}`;
+import EventJourney from './EventJourney.astro';
+import CaseStudy from './CaseStudy.astro';
+import type { CaseData } from './CaseStudy.astro';
+import { images, listedEvents } from '../content/site';
+interface Props { page: SitePage; references?: CaseData[] }
+const { page, references = [] } = Astro.props;
+const path = (value: string) => `${import.meta.env.BASE_URL}${value.replace(/^\//, '')}`;
+const srcSet = (src: string, width: number) => `${path(src.replace('.webp', '-800.webp'))} 800w, ${path(src)} ${width}w`;
 const closingTitles: Record<string, string> = {
   hochzeiten: 'Lassen Sie Ihren Tag klingen.',
   eventagenturen: 'Ihr Konzept. Unser Klang.',
@@ -15,15 +18,42 @@ const closingTitles: Record<string, string> = {
   'event-kuenstler-rhein-neckar': 'Ein Event in der Region geplant?',
   'event-kuenstler-rhein-main': 'Lassen Sie uns über Ihr Event sprechen.',
 };
+const eventTypes: Record<string, string> = {
+  'corporate-events': 'Corporate Event',
+  hochzeiten: 'Hochzeit',
+  eventagenturen: 'Eventagentur',
+};
+const contact = `${path('/kontakt/')}${eventTypes[page.slug] ? `?anlass=${encodeURIComponent(eventTypes[page.slug])}` : ''}`;
+const journeys: Record<string, { title: string; text: string }[]> = {
+  'corporate-events': [
+    { title: 'Empfang', text: 'Ankommen mit einer eigenen musikalischen Atmosphäre.' },
+    { title: 'Networking', text: 'Präsente, aber dezente Musik für Gespräche.' },
+    { title: 'Dinner', text: 'Sets passend zu Service und Ablauf.' },
+    { title: 'Highlight', text: 'Eine bewusst gesetzte Performance.' },
+  ],
+  hochzeiten: [
+    { title: 'Trauung', text: 'Ein besonderer Rahmen für emotionale Momente.' },
+    { title: 'Sektempfang', text: 'Live-Musik, während Gäste zusammenkommen.' },
+    { title: 'Dinner', text: 'Dezente musikalische Begleitung.' },
+    { title: 'Abend', text: 'Ein besonderer Live-Moment als Teil der Feier.' },
+  ],
+};
 ---
 <section class:list={['page-hero', `page-hero--${page.slug}`]}>
   <div class="shell page-hero-grid">
-    <div class="page-hero-copy">{page.eyebrow && <span class="page-hero-eyebrow">{page.eyebrow}</span>}<h1>{page.title}</h1><p>{page.intro}</p><a class="button button-gold" href={page.slug === 'academy' ? 'mailto:info@bukkador-handpan.de?subject=Anfrage%20Handpan%20Academy' : path('/kontakt/')}>{page.slug === 'academy' ? 'Academy anfragen' : page.slug === 'eventagenturen' ? 'Briefing senden' : 'Event-Angebot anfragen'} <span aria-hidden="true">↗</span></a></div>
-    <div class="page-hero-media"><img src={path(page.image.src)} alt={page.image.alt} width="1600" height="900" style={page.image.position ? `object-position:${page.image.position}` : undefined} /></div>
+    <div class="page-hero-copy">{page.eyebrow && <span class="page-hero-eyebrow">{page.eyebrow}</span>}<h1>{page.title}</h1><p>{page.intro}</p><a class="button button-gold" href={page.slug === 'academy' ? 'mailto:info@bukkador-handpan.de?subject=Anfrage%20Handpan%20Academy' : contact}>{page.slug === 'academy' ? 'Academy anfragen' : page.cta ?? 'Event-Verfügbarkeit prüfen'} <span aria-hidden="true">↗</span></a></div>
+    <div class="page-hero-media"><!-- TODO: Replace concept images with real Bukkador photography --><img src={path(page.image.src)} srcset={page.image.concept ? srcSet(page.image.src, page.image.width ?? 1600) : undefined} sizes="(max-width: 700px) 100vw, 50vw" alt={page.image.alt} data-placeholder={page.image.concept ? 'concept' : undefined} width={page.image.width ?? 1600} height={page.image.height ?? 900} style={`--image-position:${page.image.position ?? 'center'};--image-mobile-position:${page.image.mobilePosition ?? page.image.position ?? 'center'}`} />{page.image.concept && <span class="concept-note">Konzeptbild · keine Bukkador-Referenz</span>}</div>
   </div>
 </section>
 <div class:list={['detail-rail', `detail-rail--${page.slug}`]}><div class="shell">{page.details.map((detail) => <span>{detail}</span>)}</div></div>
-{page.sections.map((section, index) => <EditorialSection section={section} reverse={index % 2 === 1} />)}
-{page.slug === 'referenzen' && <section class="events-list-section section-space"><div class="shell"><h2>Öffentliche Termine aus 2026</h2><div class="events-list">{listedEvents.map((event) => <div><strong>{event.title}</strong><span>{event.place}</span><time>{event.date}</time></div>)}</div></div></section>}
+{page.slug === 'corporate-events' && <section class="uses-section section-space"><div class="shell"><h2>Für jeden Moment Ihres Events.</h2><p>Ob Empfang, Firmenfeier, Sommerfest, Weihnachtsfeier, Gala, Messe, Dinner oder Incentive: Die Musik erhält eine passende Rolle im Ablauf.</p><div class="uses-line"><span>Empfang</span><span>Networking</span><span>Feier</span><span>Gala</span><span>Messe</span><span>Dinner</span></div></div></section>}
+{journeys[page.slug] && <EventJourney title={page.slug === 'hochzeiten' ? 'Ein Klang durch Ihren Tag.' : 'Vom Empfang bis zum Highlight.'} steps={journeys[page.slug]} />}
+{page.slug !== 'referenzen' && page.sections.map((section, index) => <EditorialSection section={section} reverse={index % 2 === 1} />)}
+{page.slug === 'corporate-events' && <section class="planning-section section-space"><div class="shell"><h2>Professionell geplant.</h2><p>Ein klarer Prozess mit möglichst wenig organisatorischem Aufwand für Sie.</p><ol class="planning-line"><li>Briefing</li><li>Ablauf</li><li>Technik</li><li>Aufbau</li><li>Soundcheck</li><li>Performance</li><li>Abbau</li></ol><a class="text-link" href={contact}>Corporate Event anfragen ↗</a></div></section>}
+{page.slug === 'eventagenturen' && <><section class="planning-section section-space"><div class="shell"><h2>Für Ihre nächste Produktion.</h2><p>Direkte Kommunikation, schnelle Verfügbarkeitsprüfung und flexible Set-Zeiten erleichtern die Einbindung in Ihr Konzept. Michael stimmt Technik, Spielort und Timing mit Location und Produktion ab; wiederkehrende Zusammenarbeit ist möglich.</p><ol class="planning-line"><li>Briefing</li><li>Verfügbarkeit</li><li>Technik</li><li>Produktion</li><li>Performance</li></ol></div></section><section class="materials-section section-space"><div class="shell"><h2>Alles für Ihre Kundenpräsentation.</h2><p>Artist-Profil, Pressebilder, Technical Rider und Event-Showreel werden hier nach Freigabe bereitgestellt. Bis dahin können Sie Material direkt anfordern.</p><div class="materials-list"><span>Artist-Profil · in Vorbereitung</span><span>Pressebilder · in Vorbereitung</span><span>Technical Rider · in Vorbereitung</span><span>Showreel · in Vorbereitung</span></div><a class="text-link" href={`mailto:info@bukkador-handpan.de?subject=${encodeURIComponent('Künstlerprofil Bukkador anfordern')}`}>Künstlerprofil anfordern ↗</a><!-- TODO: Add approved artist profile, press images, technical rider and showreel --></div></section></>}
+{page.slug === 'hochzeiten' && <section class="planner-section section-space"><div class="shell"><h2>Auch für Wedding Planner.</h2><p>Wenn Sie eine Hochzeit planen, stimmen wir Ablauf, Spielorte, Technik und die musikalischen Übergänge direkt mit Ihnen und der Location ab.</p><a class="text-link" href={contact}>Hochzeit unverbindlich anfragen ↗</a></div></section>}
+{page.slug === 'referenzen' && <><section class="reference-empty section-space"><div class="shell"><h2>Ausgewählte Veranstaltungen.</h2>{references.length ? references.map((reference) => <CaseStudy data={reference} />) : <p>Freigegebene Case Studies mit Anlass, Ort, Performance-Konzept und Bildern werden ergänzt. Öffentliche Termine sind keine Kundenreferenzen.</p>}</div></section><section class="reference-empty section-space"><div class="shell"><h2>Stimmen von Veranstaltern.</h2><p>{references.some((reference) => reference.testimonial) ? 'Freigegebene Stimmen finden Sie bei den Veranstaltungen oben.' : 'Hier erscheinen ausschließlich freigegebene Originalstimmen. Aktuell liegt kein veröffentlichtes Testimonial vor.'}</p><!-- TODO: Add approved testimonials --></div></section><section class="impression-section section-space"><div class="shell"><h2>Event-Impressionen.</h2><p>Die folgenden Bilder zeigen eine Bildidee für künftige Bukkador-Eventaufnahmen.</p><div class="impression-grid"><div><img src={path(images.corporateDinner.src)} srcset={srcSet(images.corporateDinner.src, images.corporateDinner.width)} sizes="(max-width: 700px) 100vw, 45vw" alt={images.corporateDinner.alt} data-placeholder="concept" width="1600" height="1067" loading="lazy" style={`--image-position:${images.corporateDinner.position};--image-mobile-position:${images.corporateDinner.mobilePosition}`} /><span class="concept-note">Konzeptbild</span></div><div><img src={path(images.weddingReception.src)} srcset={srcSet(images.weddingReception.src, images.weddingReception.width)} sizes="(max-width: 700px) 100vw, 45vw" alt={images.weddingReception.alt} data-placeholder="concept" width="1600" height="1067" loading="lazy" style={`--image-mobile-position:${images.weddingReception.mobilePosition}`} /><span class="concept-note">Konzeptbild</span></div></div></div></section><section class="events-list-section section-space"><div class="shell"><h2>Öffentliche Termine · Archiv 2026</h2><p>Die folgenden öffentlich angekündigten Termine stammen aus dem alten Bukkador-Kalender. Sie belegen keine Corporate- oder Hochzeitsbuchungen.</p><div class="events-list">{listedEvents.map((event) => <div><strong>{event.title}</strong><span>{event.place}</span><time>{event.date}</time></div>)}</div></div></section></>}
+{['corporate-events', 'hochzeiten', 'eventagenturen'].includes(page.slug) && <section class="related-section section-space"><div class="shell"><h2>Mehr über Bukkador.</h2><div><a class="text-link" href={path('/referenzen/')}>Referenzen & Events ↗</a><a class="text-link" href={path('/ueber-bukkador/')}>Michael Noll kennenlernen ↗</a><a class="text-link" href={contact}>Verfügbarkeit prüfen ↗</a></div></div></section>}
+{page.slug.startsWith('event-kuenstler-') && <section class="related-section section-space"><div class="shell"><h2>Passend für Ihren Anlass.</h2><div><a class="text-link" href={path('/corporate-events/')}>Corporate Events ↗</a><a class="text-link" href={path('/hochzeiten/')}>Hochzeiten ↗</a><a class="text-link" href={contact}>Verfügbarkeit in der Region prüfen ↗</a></div></div></section>}
 {page.faqs && <FAQList items={page.faqs} />}
-<ClosingCTA title={closingTitles[page.slug] ?? 'Ein gutes Event beginnt mit einem Gespräch.'} text={page.closing} academy={page.slug === 'academy'} />
+<ClosingCTA title={closingTitles[page.slug] ?? 'Ein gutes Event beginnt mit einem Gespräch.'} text={page.closing} academy={page.slug === 'academy'} cta={page.cta} href={page.slug === 'academy' ? undefined : contact} />

@@ -17,9 +17,10 @@ Qualitätsprüfungen:
 npm run build
 npm run typecheck
 npm run lint
+npm test
 ```
 
-Die fertige statische Website liegt in `dist/` und kann auf einem statischen Host ausgeliefert werden. Produktionsadresse und Canonicals sind in `astro.config.mjs` und `src/content/site.ts` auf `https://bukkador-handpan.de` eingestellt. Bei einem anderen endgültigen Host müssen beide Werte angepasst werden.
+Die fertige statische Website liegt in `dist/` und wird derzeit für GitHub Pages unter `https://ak-learn-code.github.io/relaunch-Bukkador-Handpan/` gebaut. Bei Umzug auf die eigene Domain müssen `astro.config.mjs`, `src/content/site.ts`, Worker-Origin und die Formular-URL angepasst werden.
 
 ## Seiten
 
@@ -28,10 +29,11 @@ Die fertige statische Website liegt in `dist/` und kann auf einem statischen Hos
 - `/hochzeiten/` · Paare und Wedding Planner
 - `/eventagenturen/` · Agenturen und Veranstalter
 - `/ueber-bukkador/` · Michael Noll
-- `/referenzen/` · öffentliche Termine und Einblicke, ohne erfundene Kundenreferenzen
+- `/referenzen/` · freigegebene Case-Study-Slots, Konzept-Impressionen und archivierte öffentliche Termine
 - `/academy/` · Unterricht und Workshops
 - `/event-kuenstler-rhein-neckar/` und `/event-kuenstler-rhein-main/` · zwei eigenständige Regional-Seiten
 - `/kontakt/` · qualifizierte Event-Anfrage
+- `/danke/` · Bestätigung nach erfolgreichem Versand (noindex)
 - `/impressum/`, `/datenschutz/`, `/agb/` · Rechtstexte
 
 `reference/` bleibt im Repository als interne Quelle. Astro veröffentlicht ausschließlich `public/` und die gebauten Seiten; `reference/` wird nicht nach `dist/` kopiert.
@@ -48,21 +50,27 @@ Der öffentliche Sanity-Client in `src/lib/sanity.ts` ruft Inhalte nur während 
 
 ## Event-Anfragen
 
-Das Formular erfasst Kontakt, Art, Ort, Datum, Gästezahl, gewünschte Begleitung, Budgetrahmen und Nachricht. Ohne Versanddienst öffnet es einen vorbereiteten E-Mail-Entwurf an `info@bukkador-handpan.de`; die anfragende Person muss diesen im E-Mail-Programm selbst senden. Das ist lokal nutzbar und speichert keine Anfrage auf der Website.
+Das Formular sendet JSON direkt an einen API-Endpunkt und führt nach einem erfolgreichen `2xx`-Status auf `/danke/`. Es öffnet keinen E-Mail-Entwurf. Ohne konfigurierten Endpunkt ist die Senden-Schaltfläche gesperrt und die Kontakt-E-Mail wird als Alternative angezeigt. Ein `2xx` bedeutet, dass der Backend-Dienst den Lead angenommen hat; ohne ein bereitgestelltes Backend gibt es keinen Live-Versand.
 
-Für direkten Versand `PUBLIC_EVENT_FORM_ENDPOINT` auf einen eigenen HTTPS-Endpunkt setzen. Er muss JSON per `POST` annehmen und bei Erfolg einen `2xx`-Status liefern. Vor Aktivierung gehören Spam-Schutz, Speicherung, Fehlerbehandlung und Datenschutzerklärung zum gewählten Dienst angepasst. Ein solcher Dienst ist noch nicht eingerichtet.
+Ein Cloudflare-Worker ist unter `api/lead-worker.mjs` vorbereitet. Er prüft Herkunft und Pflichtfelder, speichert Leads 30 Tage in Cloudflare KV und benachrichtigt über Resend. Die Beispielkonfiguration liegt in `api/wrangler.toml.example`; `RESEND_API_KEY` muss als Worker-Secret gesetzt werden. Vor dem Live-Betrieb braucht es eine eigene Cloudflare-Worker-URL, eine KV-Namespace-ID, eine verifizierte Absenderdomain und die rechtlich geprüfte Datenschutzerklärung. Spam-Schutz über das vorhandene Honeypot-Feld hinaus sollte vor Aktivierung ergänzt werden.
+
+Die Worker-URL kommt in `PUBLIC_EVENT_FORM_ENDPOINT`; beim GitHub-Pages-Workflow wird sie aus der Repository-Variable gleichen Namens gelesen. `ALLOWED_ORIGIN` muss zur tatsächlichen Website-Origin passen. Nach Einrichtung den Worker bereitstellen, die Variable setzen und die Website neu bauen. Keine Secrets als `PUBLIC_`-Variable speichern.
+
+Tracking-Hooks sind DOM-Events `form_start`, `form_submit` und `qualified_lead` ohne Analytics-Bibliothek. `qualified_lead` wird nach erfolgreichem Versand ausgelöst, wenn Anlass, Ort, Datum und Budgetrahmen angegeben wurden.
 
 ## Markenbild und Medien
 
 Das bestehende goldene Mandala-Logo, Montserrat-Schrift sowie Moosgrün (`#5a694e`) und Altgold (`#bfa766`) wurden aus der alten Website übernommen. Fotos stammen aus deren Sicherung, wurden lokal als WebP optimiert und liegen in `public/images/`. Die alte Baukasten-CDN wird im ausgelieferten HTML nicht referenziert. Die Bildzuordnung und Alternativtexte stehen in `src/content/site.ts`.
 
-Noch benötigt werden ein hochwertiges Video oder Fotos einer echten Live-Veranstaltung mit Publikum und – nur mit Freigabe – belegbare Corporate-/Hochzeitsreferenzen sowie Testimonials. Bis dahin zeigen Event-Seiten Originalaufnahmen von Michael Noll und der Handpan. Es wurden keine Kunden, Auftritte oder Bewertungen erfunden. Die Terminliste auf `/referenzen/` ist ausdrücklich als Auswahl öffentlich angekündigter Termine der alten Website gekennzeichnet.
+Noch benötigt werden ein hochwertiges Video oder Fotos einer echten Live-Veranstaltung mit Publikum und – nur mit Freigabe – belegbare Corporate-/Hochzeitsreferenzen sowie Testimonials. Bis dahin zeigen Event-Seiten sichtbar als Konzeptbild markierte Eventmotive; Über Bukkador und Academy nutzen echte Aufnahmen von Michael Noll. Die neun generierten Motive liegen in `public/images/placeholders/`; Austauschvorgaben stehen in `PLACEHOLDER-ASSETS.md`. Es wurden keine Kunden, Auftritte oder Bewertungen erfunden. Die Terminliste auf `/referenzen/` ist ausdrücklich als Auswahl öffentlich angekündigter Termine der alten Website gekennzeichnet.
+
+Ein freigegebenes MP4-Showreel kann später über `PUBLIC_SHOWREEL_SRC` eingebunden werden. Auf Desktop läuft es im Hero stumm, inline und in Schleife; auf Mobile bleibt ein statisches Poster. Der große Showreel-Bereich bietet Wiedergabesteuerung. Vor dem Live-Betrieb muss das Poster durch ein echtes Event-Still ersetzt werden.
 
 ## Vor öffentlichem Start
 
 - Impressum, Datenschutz und übernommene AGB juristisch prüfen. Insbesondere Hosting-Angaben, Formularversand und die Steuerangabe aus dem alten Impressum müssen geklärt werden.
-- Wenn Anfragen ohne E-Mail-Programm direkt ankommen sollen, einen Versand-Endpunkt anbinden.
-- Echte Veranstaltungsmedien und freigegebene Referenzen ergänzen.
+- Cloudflare Worker, KV und Resend konfigurieren; erst danach den direkten Formularversand aktivieren und Ende-zu-Ende testen.
+- Konzeptbilder durch echte Veranstaltungsmedien ersetzen und freigegebene Referenzen ergänzen. Der alte/neue Inhaltsabgleich steht in `CONTENT-MIGRATION.md`.
 - Domain und Hosting festlegen, dann Canonicals, Sitemap und Datenschutz mit der endgültigen Bereitstellung abgleichen.
 
 ## Technische Basis
