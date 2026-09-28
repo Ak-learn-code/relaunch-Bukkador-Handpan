@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../content/site';
 const endpoint = import.meta.env.PUBLIC_EVENT_FORM_ENDPOINT ?? '';
+const path = (value: string) => `${import.meta.env.BASE_URL}${value.replace(/^\//, '')}`;
 ---
 <BaseLayout title="Event-Angebot anfragen" description="Prüfen Sie die Verfügbarkeit von Bukkador Handpan für Ihr Event. Mit wenigen Eckdaten erhalten Sie ein individuelles Angebot für Corporate Events, Hochzeiten und mehr.">
   <div class="form-page"><section class="form-hero"><div class="shell"><h1>Erzählen Sie von Ihrem Event.</h1><p>Datum, Ort, Anlass und ein paar Wünsche reichen für den ersten Schritt. Michael Noll prüft die Verfügbarkeit und meldet sich persönlich.</p></div></section>
@@ -20,7 +21,7 @@ const endpoint = import.meta.env.PUBLIC_EVENT_FORM_ENDPOINT ?? '';
     <div class="field"><label for="budget">Budgetrahmen</label><select id="budget" name="budget"><option value="">Noch nicht festgelegt</option><option>Unter 1.000 €</option><option>1.000–2.000 €</option><option>2.000–4.000 €</option><option>Über 4.000 €</option></select></div>
     <div class="field full"><label for="message">Was ist Ihnen für die Musik wichtig?</label><textarea id="message" name="message" placeholder="Ablauf, gewünschte Stimmung, besondere Wünsche …"></textarea></div>
     <div class="honeypot" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off" /></div>
-    <div class="form-actions"><p class="consent">Mit dem Absenden werden Ihre Angaben zur Bearbeitung der Anfrage verwendet. Details stehen in der <a href="/datenschutz/">Datenschutzerklärung</a>.</p><button class="button button-gold" type="submit">Event-Angebot anfragen <span aria-hidden="true">↗</span></button><p class="form-status" id="form-status" role="status" aria-live="polite"></p></div>
+    <div class="form-actions"><p class="consent">Mit dem Absenden werden Ihre Angaben zur Bearbeitung der Anfrage verwendet. Details stehen in der <a href={path('/datenschutz/')}>Datenschutzerklärung</a>.</p><button class="button button-gold" type="submit">Event-Angebot anfragen <span aria-hidden="true">↗</span></button><p class="form-status" id="form-status" role="status" aria-live="polite"></p></div>
   </form></div></section></div>
   <script>
     const form = document.querySelector<HTMLFormElement>('#event-form');

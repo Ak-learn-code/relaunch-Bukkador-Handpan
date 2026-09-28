@@ -27,7 +27,7 @@ export const site = {
   email: 'info@bukkador-handpan.de',
   phone: '+49 160 84 19 320',
   phoneHref: 'tel:+491608419320',
-  origin: 'https://bukkador-handpan.de',
+  origin: 'https://ak-learn-code.github.io/relaunch-Bukkador-Handpan',
 };
 
 export const navigation = [
