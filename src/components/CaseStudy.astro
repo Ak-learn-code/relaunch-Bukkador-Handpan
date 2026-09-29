@@ -17,7 +17,7 @@ const { data } = Astro.props;
 const path = (value: string) => `${import.meta.env.BASE_URL}${value.replace(/^\//, '')}`;
 ---
 <article class="case-study">
-  {data.image && <div class="case-image"><img src={path(data.image.src)} alt={data.image.alt} loading="lazy" decoding="async" data-placeholder={data.image.concept ? 'concept' : undefined} width="1600" height="900" />{data.image.concept && <span class="concept-note">Konzeptbild · keine dokumentierte Referenz</span>}</div>}
-  <div class="case-copy"><p class="case-meta">{data.eventType}{data.place && ` · ${data.place}`}{data.date && ` · ${data.date}`}</p><h3>{data.title}</h3><p>{data.occasion}</p><p>{data.concept}</p>{data.flow && <p>{data.flow}</p>}{data.testimonial && <blockquote><p>„{data.testimonial.quote}“</p><cite>{data.testimonial.attribution}</cite></blockquote>}</div>
+  {data.image && <div class="case-image" data-reveal="image"><img src={path(data.image.src)} alt={data.image.alt} loading="lazy" decoding="async" data-placeholder={data.image.concept ? 'concept' : undefined} width="1600" height="900" />{data.image.concept && <span class="concept-note">Konzeptbild · keine dokumentierte Referenz</span>}</div>}
+  <div class="case-copy" data-reveal="fade-up"><p class="case-meta">{data.eventType}{data.place && ` · ${data.place}`}{data.date && ` · ${data.date}`}</p><h3>{data.title}</h3><p>{data.occasion}</p><p>{data.concept}</p>{data.flow && <p>{data.flow}</p>}{data.testimonial && <blockquote><p>„{data.testimonial.quote}“</p><cite>{data.testimonial.attribution}</cite></blockquote>}</div>
   {data.gallery && <div class="case-gallery">{data.gallery.map((image) => <img src={path(image.src)} alt={image.alt} loading="lazy" decoding="async" data-placeholder={image.concept ? 'concept' : undefined} width="800" height="600" />)}</div>}
 </article>

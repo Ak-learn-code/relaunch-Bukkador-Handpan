@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { navigation, site } from '../content/site';
+import { site } from '../content/site';
 
 interface Props {
   title: string;
@@ -15,6 +15,13 @@ const path = (value: string) => `${base}${value.replace(/^\//, '')}`;
 const canonical = new URL(Astro.url.pathname, site.origin).toString();
 const socialImage = new URL(path(image.includes('/placeholders/') ? '/images/michael-noll-wide.webp' : image), site.origin).toString();
 const isHome = Astro.url.pathname === base;
+const eventLinks = [
+  { label: 'Corporate Events', href: '/corporate-events/', description: 'Firmenfeiern, Empfänge & Business Events' },
+  { label: 'Hochzeiten', href: '/hochzeiten/', description: 'Trauung, Empfang & Dinner' },
+  { label: 'Eventagenturen', href: '/eventagenturen/', description: 'Professioneller Live-Act für Produktionen' },
+];
+const eventPaths = eventLinks.map((item) => path(item.href));
+const isEventPage = eventPaths.includes(Astro.url.pathname);
 const structuredData = [
   { '@context': 'https://schema.org', '@type': 'WebSite', name: site.name, url: site.origin, inLanguage: 'de-DE' },
   { '@context': 'https://schema.org', '@type': 'Person', name: site.artist, alternateName: site.name, jobTitle: 'Handpan-Artist', url: site.origin, email: site.email, telephone: site.phone, address: { '@type': 'PostalAddress', addressLocality: 'Worms', addressCountry: 'DE' } },
@@ -52,14 +59,30 @@ const structuredData = [
           <span><strong>BUKKADOR</strong><small>HANDPAN</small></span>
         </a>
         <nav class="desktop-nav" aria-label="Hauptnavigation">
-          {navigation.map((item) => <a href={path(item.href)} aria-current={Astro.url.pathname === item.href ? 'page' : undefined}>{item.label}</a>)}
+          <div class="events-menu" data-events-menu>
+            <button class="events-trigger" type="button" aria-expanded="false" aria-controls="events-dropdown" aria-current={isEventPage ? 'page' : undefined}>Events <span aria-hidden="true">⌄</span></button>
+            <div class="events-dropdown" id="events-dropdown" role="menu" aria-label="Eventbereiche">
+              {eventLinks.map((item) => <a href={path(item.href)} role="menuitem" aria-current={Astro.url.pathname === path(item.href) ? 'page' : undefined}><strong>{item.label}</strong><small>{item.description}</small></a>)}
+            </div>
+          </div>
+          <a href={path('/ueber-bukkador/')} aria-current={Astro.url.pathname === path('/ueber-bukkador/') ? 'page' : undefined}>Über Bukkador</a>
+          <a href={path('/referenzen/')} aria-current={Astro.url.pathname === path('/referenzen/') ? 'page' : undefined}>Referenzen</a>
+          <a href={path('/academy/')} aria-current={Astro.url.pathname === path('/academy/') ? 'page' : undefined}>Bukkador Academy</a>
         </nav>
         <a class="header-cta" href={path('/kontakt/')}>Event anfragen <span aria-hidden="true">↗</span></a>
         <details class="mobile-nav">
           <summary aria-label="Menü"><span></span><span></span><span class="sr-only">Menü</span></summary>
           <nav aria-label="Mobile Navigation">
-            {navigation.map((item) => <a href={path(item.href)} aria-current={Astro.url.pathname === item.href ? 'page' : undefined}>{item.label}</a>)}
-            <a href={path('/kontakt/')}>Event anfragen</a>
+            <details class="mobile-events" open={isEventPage}>
+              <summary aria-current={isEventPage ? 'page' : undefined}>Events <span aria-hidden="true">+</span></summary>
+              <div>
+                {eventLinks.map((item) => <a href={path(item.href)} aria-current={Astro.url.pathname === path(item.href) ? 'page' : undefined}>{item.label}</a>)}
+              </div>
+            </details>
+            <a href={path('/ueber-bukkador/')} aria-current={Astro.url.pathname === path('/ueber-bukkador/') ? 'page' : undefined}>Über Bukkador</a>
+            <a href={path('/referenzen/')} aria-current={Astro.url.pathname === path('/referenzen/') ? 'page' : undefined}>Referenzen</a>
+            <a href={path('/academy/')} aria-current={Astro.url.pathname === path('/academy/') ? 'page' : undefined}>Bukkador Academy</a>
+            <a class="mobile-nav-cta" href={path('/kontakt/')}>Event anfragen <span aria-hidden="true">↗</span></a>
           </nav>
         </details>
       </div>
@@ -82,5 +105,48 @@ const structuredData = [
       </div>
       <div class="shell footer-bottom"><span>© {new Date().getFullYear()} Michael Noll · Bukkador Handpan</span><nav aria-label="Rechtliches"><a href={path('/impressum/')}>Impressum</a><a href={path('/datenschutz/')}>Datenschutz</a><a href={path('/agb/')}>AGB</a></nav></div>
     </footer>
+    <script>
+      import '../scripts/motion';
+      const menu = document.querySelector<HTMLElement>('[data-events-menu]');
+      if (menu) {
+        const trigger = menu.querySelector<HTMLButtonElement>('.events-trigger');
+        const links = Array.from(menu.querySelectorAll<HTMLAnchorElement>('[role="menuitem"]'));
+        let closeTimer: number | undefined;
+        const isDesktop = () => window.matchMedia('(min-width: 951px)').matches;
+        const open = () => {
+          if (!isDesktop() || !trigger) return;
+          window.clearTimeout(closeTimer);
+          menu.classList.add('is-open');
+          trigger.setAttribute('aria-expanded', 'true');
+        };
+        const close = (restoreFocus = false) => {
+          window.clearTimeout(closeTimer);
+          menu.classList.remove('is-open');
+          trigger?.setAttribute('aria-expanded', 'false');
+          if (restoreFocus) trigger?.focus();
+        };
+        const queueClose = () => { closeTimer = window.setTimeout(() => close(), 140); };
+
+        trigger?.addEventListener('click', () => menu.classList.contains('is-open') ? close() : open());
+        menu.addEventListener('mouseenter', open);
+        menu.addEventListener('mouseleave', queueClose);
+        menu.addEventListener('focusin', open);
+        menu.addEventListener('focusout', () => window.setTimeout(() => { if (!menu.contains(document.activeElement)) close(); }));
+        document.addEventListener('pointerdown', (event) => { if (!menu.contains(event.target as Node)) close(); });
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && menu.classList.contains('is-open')) { event.preventDefault(); close(true); }
+        });
+        trigger?.addEventListener('keydown', (event) => {
+          if (event.key === 'ArrowDown') { event.preventDefault(); open(); links[0]?.focus(); }
+          if (event.key === 'ArrowUp') { event.preventDefault(); open(); links.at(-1)?.focus(); }
+        });
+        links.forEach((link, index) => link.addEventListener('keydown', (event) => {
+          if (event.key === 'ArrowDown') { event.preventDefault(); links[(index + 1) % links.length]?.focus(); }
+          if (event.key === 'ArrowUp') { event.preventDefault(); links[(index - 1 + links.length) % links.length]?.focus(); }
+          if (event.key === 'Home') { event.preventDefault(); links[0]?.focus(); }
+          if (event.key === 'End') { event.preventDefault(); links.at(-1)?.focus(); }
+        }));
+      }
+    </script>
   </body>
 </html>

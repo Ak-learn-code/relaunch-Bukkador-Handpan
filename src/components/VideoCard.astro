@@ -1,0 +1,58 @@
+---
+interface Props {
+  youtubeId: string;
+  title: string;
+  caption: string;
+}
+const { youtubeId, title, caption } = Astro.props;
+if (!/^[A-Za-z0-9_-]{11}$/.test(youtubeId)) throw new Error('Invalid YouTube video ID');
+---
+<figure class="video-card" data-video-card data-video-id={youtubeId} data-video-title={title}>
+  <div class="video-surface" data-reveal="image">
+    <button class="video-poster" type="button" aria-label={`${title} abspielen`}>
+      <img src={`https://i.ytimg.com/vi/${youtubeId}/maxresdefault.jpg`} alt="" width="1280" height="720" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+      <span class="video-play" aria-hidden="true">▶</span>
+    </button>
+  </div>
+  <figcaption><strong>{title}</strong><span>{caption}</span></figcaption>
+</figure>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-video-card]').forEach((card) => {
+    const button = card.querySelector<HTMLButtonElement>('.video-poster');
+    button?.addEventListener('click', () => {
+      const id = card.dataset.videoId;
+      const title = card.dataset.videoTitle;
+      const surface = card.querySelector<HTMLElement>('.video-surface');
+      if (!id || !surface || !/^[A-Za-z0-9_-]{11}$/.test(id)) return;
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+      iframe.title = title ?? 'Bukkador Video';
+      iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share';
+      iframe.allowFullscreen = true;
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      surface.replaceChildren(iframe);
+      card.classList.add('is-playing');
+    }, { once: true });
+  });
+</script>
+
+<style>
+  .video-card{margin:0;min-width:0}
+  .video-surface{position:relative;aspect-ratio:16/9;overflow:hidden;background:#151814}
+  .video-poster{display:block;position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:transparent;color:white}
+  .video-poster img{width:100%;height:100%;object-fit:cover}
+  .video-poster::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.28));pointer-events:none}
+  .video-play{position:absolute;z-index:1;top:50%;left:50%;display:grid;place-items:center;width:70px;height:70px;border:1px solid rgba(255,255,255,.7);border-radius:50%;background:rgba(21,24,20,.72);font-size:1.05rem;transform:translate(-50%,-50%);transition:background .3s ease,scale .3s ease}
+  .video-poster:focus-visible{outline:3px solid var(--gold);outline-offset:-5px}
+  .video-surface :global(iframe){display:block;width:100%;height:100%;border:0}
+  figcaption{display:flex;flex-direction:column;gap:.35rem;padding-top:1rem;font-size:.78rem;line-height:1.55}
+  figcaption strong{font-weight:600}
+  figcaption span{opacity:.76}
+  @media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+    .video-poster:hover .video-play{background:rgba(21,24,20,.9);scale:1.045}
+    .video-poster:hover img{transform:scale(1.025)}
+    .video-poster img{transition:transform .5s var(--ease)}
+  }
+  @media (prefers-reduced-motion:reduce){.video-play,.video-poster img{transition:none}}
+</style>

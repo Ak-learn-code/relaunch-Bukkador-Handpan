@@ -3,9 +3,9 @@ interface Step { title: string; text: string }
 interface Props { title: string; steps: Step[] }
 const { title, steps } = Astro.props;
 ---
-<section class="journey section-space">
+<section class="journey section-space" data-journey>
   <div class="shell">
-    <h2>{title}</h2>
+    <h2 data-reveal="fade-up">{title}</h2>
     <ol class="journey-steps">
       {steps.map((step, index) => <li><span>{String(index + 1).padStart(2, '0')}</span><h3>{step.title}</h3><p>{step.text}</p></li>)}
     </ol>
