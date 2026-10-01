@@ -36,8 +36,9 @@ export const navigation = [
   { label: 'Corporate Events', href: '/corporate-events/' },
   { label: 'Hochzeiten', href: '/hochzeiten/' },
   { label: 'Eventagenturen', href: '/eventagenturen/' },
+  { label: 'Aktuelle Termine & Referenzen', href: '/referenzen/' },
+  { label: 'Bukkador Academy', href: '/academy/' },
   { label: 'Über Bukkador', href: '/ueber-bukkador/' },
-  { label: 'Referenzen', href: '/referenzen/' },
 ];
 
 export const images = {

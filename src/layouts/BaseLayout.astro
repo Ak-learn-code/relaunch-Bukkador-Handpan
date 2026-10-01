@@ -60,14 +60,14 @@ const structuredData = [
         </a>
         <nav class="desktop-nav" aria-label="Hauptnavigation">
           <div class="events-menu" data-events-menu>
-            <button class="events-trigger" type="button" aria-expanded="false" aria-controls="events-dropdown" aria-current={isEventPage ? 'page' : undefined}>Events <span aria-hidden="true">⌄</span></button>
+            <button class="events-trigger" type="button" aria-expanded="false" aria-controls="events-dropdown" aria-current={isEventPage ? 'page' : undefined}>Events <span class="events-chevron" aria-hidden="true"></span></button>
             <div class="events-dropdown" id="events-dropdown" role="menu" aria-label="Eventbereiche">
               {eventLinks.map((item) => <a href={path(item.href)} role="menuitem" aria-current={Astro.url.pathname === path(item.href) ? 'page' : undefined}><strong>{item.label}</strong><small>{item.description}</small></a>)}
             </div>
           </div>
-          <a href={path('/ueber-bukkador/')} aria-current={Astro.url.pathname === path('/ueber-bukkador/') ? 'page' : undefined}>Über Bukkador</a>
-          <a href={path('/referenzen/')} aria-current={Astro.url.pathname === path('/referenzen/') ? 'page' : undefined}>Referenzen</a>
+          <a href={path('/referenzen/')} aria-current={Astro.url.pathname === path('/referenzen/') ? 'page' : undefined}>Aktuelle Termine &amp; Referenzen</a>
           <a href={path('/academy/')} aria-current={Astro.url.pathname === path('/academy/') ? 'page' : undefined}>Bukkador Academy</a>
+          <a href={path('/ueber-bukkador/')} aria-current={Astro.url.pathname === path('/ueber-bukkador/') ? 'page' : undefined}>Über Bukkador</a>
         </nav>
         <a class="header-cta" href={path('/kontakt/')}>Event anfragen <span class="arrow-icon" aria-hidden="true"></span></a>
         <details class="mobile-nav">
@@ -79,9 +79,9 @@ const structuredData = [
                 {eventLinks.map((item) => <a href={path(item.href)} aria-current={Astro.url.pathname === path(item.href) ? 'page' : undefined}>{item.label}</a>)}
               </div>
             </details>
-            <a href={path('/ueber-bukkador/')} aria-current={Astro.url.pathname === path('/ueber-bukkador/') ? 'page' : undefined}>Über Bukkador</a>
-            <a href={path('/referenzen/')} aria-current={Astro.url.pathname === path('/referenzen/') ? 'page' : undefined}>Referenzen</a>
+            <a href={path('/referenzen/')} aria-current={Astro.url.pathname === path('/referenzen/') ? 'page' : undefined}>Aktuelle Termine &amp; Referenzen</a>
             <a href={path('/academy/')} aria-current={Astro.url.pathname === path('/academy/') ? 'page' : undefined}>Bukkador Academy</a>
+            <a href={path('/ueber-bukkador/')} aria-current={Astro.url.pathname === path('/ueber-bukkador/') ? 'page' : undefined}>Über Bukkador</a>
             <a class="mobile-nav-cta" href={path('/kontakt/')}>Event anfragen <span class="arrow-icon" aria-hidden="true"></span></a>
           </nav>
         </details>
