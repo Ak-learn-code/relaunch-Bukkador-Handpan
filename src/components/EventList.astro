@@ -1,0 +1,8 @@
+---
+import { formatEventDate, type PublicEvent } from '../content/events';
+interface Props { events: PublicEvent[]; compact?: boolean }
+const { events, compact = false } = Astro.props;
+---
+<div class:list={['event-list', { 'event-list--compact': compact }]}>
+  {events.length ? events.map((event) => <article class="event-list-item"><time datetime={event.date}>{formatEventDate(event)}</time><div><p class="event-list-type">{event.type}</p><h3>{event.title}</h3><p>{event.place}{event.time && ` · ${event.time}`}</p></div></article>) : <p class="event-list-empty">Derzeit sind keine neuen öffentlichen Termine angekündigt.</p>}
+</div>

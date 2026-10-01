@@ -11,7 +11,8 @@
     "lint": "eslint .",
     "test": "node --test api/*.test.mjs",
     "studio": "sanity dev",
-    "studio:build": "sanity build"
+    "studio:build": "sanity build",
+    "sanity:seed-events": "sanity exec sanity/import-events.ts"
   },
   "repository": {
     "type": "git",

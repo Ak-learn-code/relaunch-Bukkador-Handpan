@@ -1,5 +1,6 @@
 import { createClient } from '@sanity/client';
 import type { SitePage, ContentSection, FAQ } from '../content/site';
+import type { PublicEvent } from '../content/events';
 import type { CaseData } from '../components/CaseStudy.astro';
 
 const projectId = import.meta.env.PUBLIC_SANITY_PROJECT_ID;
@@ -14,7 +15,7 @@ export const pageQuery = `*[_type == "page" && slug.current == $slug][0]{
   "sections": sections[]{title, text, points, tone, "image": {"src": image.asset->url, "alt": image.alt}},
   "faqs": faqs[]->{"question": question, "answer": answer}
 }`;
-export const eventsQuery = `*[_type == "event" && visible == true] | order(date desc){title, place, date, description, "imageUrl": image.asset->url}`;
+export const eventsQuery = `*[_type == "event" && visible == true] | order(date asc){title, place, date, dateEnd, time, type}`;
 export const referencesQuery = `*[_type == "reference" && visible == true && permissionConfirmed == true] | order(date desc){title, eventType, place, date, occasion, performanceConcept, flow, "image": {"src": image.asset->url, "alt": image.alt}, "testimonial": testimonial->{quote, person, role, permissionConfirmed}, "gallery": gallery[]{"src": asset->url, alt}}`;
 export const settingsQuery = `*[_type == "siteSettings"][0]{siteTitle, contactEmail, contactPhone, defaultSeo}`;
 export const navigationQuery = `*[_type == "navigation"][0]{items[]{label, href}}`;
@@ -69,5 +70,20 @@ export async function getApprovedReferences(): Promise<CaseData[]> {
   } catch (error) {
     console.warn('Freigegebene Referenzen nicht verfügbar.', error);
     return [];
+  }
+}
+
+export async function getEvents(fallback: PublicEvent[]): Promise<PublicEvent[]> {
+  if (!sanityClient) return fallback;
+  try {
+    const records = await sanityClient.fetch<Array<Partial<PublicEvent>>>(eventsQuery);
+    const valid = records.filter((event) => event.title && event.place && event.date && event.type).map((event) => ({
+      title: event.title!, place: event.place!, date: event.date!, dateEnd: event.dateEnd, time: event.time,
+      type: event.type as PublicEvent['type'],
+    }));
+    return valid.length ? valid : fallback;
+  } catch (error) {
+    console.warn('Öffentliche Termine nicht verfügbar; lokale Inhalte werden verwendet.', error);
+    return fallback;
   }
 }

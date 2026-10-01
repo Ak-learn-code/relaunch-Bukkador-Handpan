@@ -31,7 +31,10 @@ const page = defineType({ name: 'page', title: 'Seite', type: 'document', fields
 
 const event = defineType({ name: 'event', title: 'Event / Termin', type: 'document', fields: [
   defineField({ name: 'title', title: 'Titel', type: 'string', validation: (Rule) => Rule.required() }),
-  defineField({ name: 'date', title: 'Datum', type: 'date' }),
+  defineField({ name: 'date', title: 'Beginn', type: 'date', validation: (Rule) => Rule.required() }),
+  defineField({ name: 'dateEnd', title: 'Ende bei mehrtägigen Terminen', type: 'date' }),
+  defineField({ name: 'time', title: 'Uhrzeit', type: 'string' }),
+  defineField({ name: 'type', title: 'Art', type: 'string', options: { list: ['Konzert', 'Workshop', 'Konzert und Workshop', 'Yoga'] } }),
   defineField({ name: 'place', title: 'Ort', type: 'string' }),
   defineField({ name: 'description', title: 'Beschreibung', type: 'text' }),
   imageField('image', 'Bild'),
