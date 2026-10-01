@@ -189,10 +189,3 @@ export const pages: SitePage[] = [
     cta: 'Verfügbarkeit in der Region prüfen',
   },
 ];
-
-export const listedEvents = [
-  { title: 'Wormser Kulturnacht', place: 'Worms', date: '13. Juni 2026' },
-  { title: 'Handwerkermarkt Franklin', place: 'Mannheim', date: '12. September 2026' },
-  { title: 'Hofkonzert in Offstein', place: 'Offstein', date: '9. Mai 2026' },
-  { title: 'Open Stage · KulturGUT', place: 'Bechtolsheim', date: '1. Mai 2026' },
-];

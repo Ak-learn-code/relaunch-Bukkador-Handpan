@@ -1,8 +1,55 @@
 ---
 import { formatEventDate, type PublicEvent } from '../content/events';
+
 interface Props { events: PublicEvent[]; compact?: boolean }
 const { events, compact = false } = Astro.props;
+const monthFormatter = new Intl.DateTimeFormat('de-DE', { month: 'short' });
+const dayFormatter = new Intl.DateTimeFormat('de-DE', { day: '2-digit' });
+const dateValue = (date: string) => new Date(`${date}T12:00:00`);
+const formatEventTime = (time: string) => time.replace(/\s*[-–]\s*/g, ' – ');
+const dateBadge = (event: PublicEvent) => {
+  const start = dateValue(event.date);
+  const end = event.dateEnd ? dateValue(event.dateEnd) : undefined;
+  const startMonth = monthFormatter.format(start).replace('.', '').toUpperCase();
+  const endMonth = end ? monthFormatter.format(end).replace('.', '').toUpperCase() : startMonth;
+  const startDay = dayFormatter.format(start);
+  const endDay = end ? dayFormatter.format(end) : undefined;
+  return {
+    month: end && endMonth !== startMonth ? `${startMonth} / ${endMonth}` : startMonth,
+    day: endDay && event.dateEnd !== event.date ? `${startDay}–${endDay}` : startDay,
+  };
+};
 ---
 <div class:list={['event-list', { 'event-list--compact': compact }]}>
-  {events.length ? events.map((event) => <article class="event-list-item"><time datetime={event.date}>{formatEventDate(event)}</time><div><p class="event-list-type">{event.type}</p><h3>{event.title}</h3><p>{event.place}{event.time && ` · ${event.time}`}</p></div></article>) : <p class="event-list-empty">Derzeit sind keine neuen öffentlichen Termine angekündigt.</p>}
+  {events.length ? events.map((event) => (
+    <article class:list={['event-list-item', 'event-card', { 'event-card--with-image': Boolean(event.image?.src), 'event-card--without-image': !event.image?.src }]}>
+      <div class="event-card-topline">
+        <p class="event-list-type">{event.type || 'Termin'}</p>
+        <time class="event-card-date" datetime={event.date} aria-label={formatEventDate(event)}>
+          <span>{dateBadge(event).month}</span>
+          <strong>{dateBadge(event).day}</strong>
+        </time>
+      </div>
+      {event.image?.src && (
+        <div class="event-list-image">
+          <img src={event.image.src} alt={event.image.alt || event.title} width="800" height="600" loading="lazy" />
+        </div>
+      )}
+      <div class="event-list-content">
+        <h3>{event.title}</h3>
+        <dl class="event-list-meta">
+          {event.place && <div>
+            <dt><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 10.5c0 5-7 10-7 10s-7-5-7-10a7 7 0 1 1 14 0Z" /><circle cx="12" cy="10.5" r="2.25" /></svg><span class="sr-only">Ort</span></dt>
+            <dd>{event.place}</dd>
+          </div>}
+          {event.time && <div>
+            <dt><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" /><path d="M12 7v5l3.5 2" /></svg><span class="sr-only">Uhrzeit</span></dt>
+            <dd>{formatEventTime(event.time)}{/\buhr\b/i.test(event.time) ? '' : ' Uhr'}</dd>
+          </div>}
+        </dl>
+        {event.description && <p class="event-list-description">{event.description}</p>}
+        {event.eventUrl && <a class="event-list-link text-link" href={event.eventUrl} target="_blank" rel="noopener noreferrer">Zur Veranstaltung <span class="arrow-icon" aria-hidden="true"></span><span class="sr-only"> (öffnet in einem neuen Tab)</span></a>}
+      </div>
+    </article>
+  )) : <p class="event-list-empty">Derzeit sind keine neuen öffentlichen Termine angekündigt.</p>}
 </div>

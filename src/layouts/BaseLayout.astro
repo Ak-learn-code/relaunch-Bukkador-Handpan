@@ -22,6 +22,11 @@ const eventLinks = [
 ];
 const eventPaths = eventLinks.map((item) => path(item.href));
 const isEventPage = eventPaths.includes(Astro.url.pathname);
+const socialLinks = [
+  { label: 'Instagram', href: 'https://www.instagram.com/bukkador_handpan', icon: 'instagram' },
+  { label: 'YouTube', href: 'https://www.youtube.com/@Bukkador_Handpan', icon: 'youtube' },
+  { label: 'Spotify', href: 'https://open.spotify.com/artist/0TbeDNlnNt5uRC2gk3Z6am', icon: 'spotify' },
+] as const;
 const structuredData = [
   { '@context': 'https://schema.org', '@type': 'WebSite', name: site.name, url: site.origin, inLanguage: 'de-DE' },
   { '@context': 'https://schema.org', '@type': 'Person', name: site.artist, alternateName: site.name, jobTitle: 'Handpan-Artist', url: site.origin, email: site.email, telephone: site.phone, address: { '@type': 'PostalAddress', addressLocality: 'Worms', addressCountry: 'DE' } },
@@ -96,6 +101,16 @@ const structuredData = [
             <span><strong>BUKKADOR</strong><small>HANDPAN</small></span>
           </a>
           <p>Handpan Live-Musik von Michael Noll.<br />Aus Worms. Für besondere Events überall in Deutschland.</p>
+          <nav class="footer-social" aria-label="Bukkador auf Social Media">
+            {socialLinks.map((link) => <a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={`Bukkador auf ${link.label}`}>
+              {link.icon === 'instagram'
+                ? <svg class="icon-instagram" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5" /><circle cx="12" cy="12" r="4" /><circle cx="17.4" cy="6.7" r="1" /></svg>
+                : link.icon === 'youtube'
+                  ? <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.3 7.2a2.8 2.8 0 0 0-2-2C17.6 4.7 12 4.7 12 4.7s-5.6 0-7.3.5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 2.2 12a29 29 0 0 0 .5 4.8 2.8 2.8 0 0 0 2 2c1.7.5 7.3.5 7.3.5s5.6 0 7.3-.5a2.8 2.8 0 0 0 2-2 29 29 0 0 0 .5-4.8 29 29 0 0 0-.5-4.8Z" /><path class="icon-cutout" d="m10 15.5 5-3.5-5-3.5v7Z" /></svg>
+                  : <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path class="icon-cutout" d="M7.7 9.9c2.6-1 6.7-.8 8.4.2M7.2 12.7c2.7-1 7.3-.8 9 .3M8 15.3c2.2-.7 5.4-.6 7 .3" /></svg>}
+              <span>{link.label}</span>
+            </a>)}
+          </nav>
         </div>
         <div class="footer-links">
           <div><strong>Entdecken</strong><a href={path('/corporate-events/')}>Corporate Events</a><a href={path('/hochzeiten/')}>Hochzeiten</a><a href={path('/eventagenturen/')}>Eventagenturen</a><a href={path('/referenzen/')}>Referenzen & Events</a></div>
@@ -105,6 +120,15 @@ const structuredData = [
       </div>
       <div class="shell footer-bottom"><span>© {new Date().getFullYear()} Michael Noll · Bukkador Handpan</span><nav aria-label="Rechtliches"><a href={path('/impressum/')}>Impressum</a><a href={path('/datenschutz/')}>Datenschutz</a><a href={path('/agb/')}>AGB</a></nav></div>
     </footer>
+    <style>
+      .footer-social{display:flex;flex-wrap:wrap;gap:.55rem 1rem;margin-top:1.4rem}
+      .footer-social a{display:inline-flex;align-items:center;gap:.42rem;color:#bfc6ba;font-size:.72rem;transition:color .2s ease}
+      .footer-social svg{width:18px;height:18px;fill:currentColor;stroke:none}
+      .footer-social .icon-instagram{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+      .footer-social .icon-cutout{fill:none;stroke:var(--ink);stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
+      .footer-social a:hover{color:var(--gold-light)}
+      @media(max-width:700px){.footer-social{margin-top:1.15rem}}
+    </style>
     <script>
       import '../scripts/motion';
       const menu = document.querySelector<HTMLElement>('[data-events-menu]');

@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import LandingPage from '../../../components/LandingPage.astro';
+import { pages } from '../../../content/site';
+import { getApprovedReferences, getEvents, getPage } from '../../../lib/sanity';
+import { getEventArchive, legacyEvents } from '../../../content/events';
+import type { GetStaticPaths } from 'astro';
+
+const referenceFallback = pages.find((page) => page.slug === 'referenzen')!;
+
+export const getStaticPaths = (async () => {
+  const events = getEventArchive(await getEvents(legacyEvents));
+  const pageCount = Math.ceil(events.length / 6);
+  return Array.from({ length: Math.max(pageCount - 1, 0) }, (_, index) => ({
+    params: { page: String(index + 2) },
+  }));
+}) satisfies GetStaticPaths;
+
+const requestedPage = Number(Astro.params.page);
+const events = await getEvents(legacyEvents);
+const eventPageCount = Math.ceil(getEventArchive(events).length / 6);
+if (!Number.isInteger(requestedPage) || requestedPage < 2 || requestedPage > eventPageCount) {
+  return Astro.redirect(`${import.meta.env.BASE_URL}referenzen/`);
+}
+const page = await getPage(referenceFallback.slug, referenceFallback);
+const references = await getApprovedReferences();
+---
+<BaseLayout title={`${page.seoTitle ?? page.title} – Seite ${requestedPage}`} description={page.description} image={page.image.src}>
+  <LandingPage page={page} references={references} events={events} eventPage={requestedPage} />
+</BaseLayout>

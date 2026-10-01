@@ -1,10 +1,13 @@
 export type PublicEvent = {
   title: string;
-  place: string;
+  place?: string;
   date: string;
   dateEnd?: string;
   time?: string;
-  type: 'Konzert' | 'Workshop' | 'Konzert und Workshop' | 'Yoga';
+  type?: 'Konzert' | 'Workshop' | 'Konzert und Workshop' | 'Yoga';
+  description?: string;
+  image?: { src: string; alt?: string };
+  eventUrl?: string;
 };
 
 // Publicly announced dates transferred from bukkador-handpan.de on 1 October 2026.
@@ -32,11 +35,15 @@ export const legacyEvents: PublicEvent[] = [
 const formatter = new Intl.DateTimeFormat('de-DE', { day: 'numeric', month: 'long', year: 'numeric' });
 export const formatEventDate = (event: Pick<PublicEvent, 'date' | 'dateEnd'>) => {
   const start = formatter.format(new Date(`${event.date}T12:00:00`));
-  return event.dateEnd ? `${start}–${formatter.format(new Date(`${event.dateEnd}T12:00:00`))}` : start;
+  if (!event.dateEnd || event.dateEnd === event.date) return start;
+  return `${start} – ${formatter.format(new Date(`${event.dateEnd}T12:00:00`))}`;
 };
 
 export const getUpcoming = (events: PublicEvent[], limit?: number) => {
   const today = new Date().toISOString().slice(0, 10);
-  const upcoming = events.filter((event) => (event.dateEnd ?? event.date) >= today).sort((a, b) => a.date.localeCompare(b.date));
+  const upcoming = events.filter((event) => (event.dateEnd ?? event.date) >= today).sort((a, b) => b.date.localeCompare(a.date));
   return limit ? upcoming.slice(0, limit) : upcoming;
 };
+
+export const getEventArchive = (events: PublicEvent[]) =>
+  [...events].sort((a, b) => b.date.localeCompare(a.date));

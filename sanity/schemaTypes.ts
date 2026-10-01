@@ -31,17 +31,18 @@ const page = defineType({ name: 'page', title: 'Seite', type: 'document', fields
 
 const event = defineType({ name: 'event', title: 'Event / Termin', type: 'document', fields: [
   defineField({ name: 'title', title: 'Titel', type: 'string', validation: (Rule) => Rule.required() }),
+  defineField({ name: 'type', title: 'Art / Kategorie', type: 'string', options: { list: ['Konzert', 'Workshop', 'Konzert und Workshop', 'Yoga'] } }),
+  imageField('image', 'Bild'),
   defineField({ name: 'date', title: 'Beginn', type: 'date', validation: (Rule) => Rule.required() }),
   defineField({ name: 'dateEnd', title: 'Ende bei mehrtägigen Terminen', type: 'date' }),
   defineField({ name: 'time', title: 'Uhrzeit', type: 'string' }),
-  defineField({ name: 'type', title: 'Art', type: 'string', options: { list: ['Konzert', 'Workshop', 'Konzert und Workshop', 'Yoga'] } }),
   defineField({ name: 'place', title: 'Ort', type: 'string' }),
   defineField({ name: 'description', title: 'Beschreibung', type: 'text' }),
-  imageField('image', 'Bild'),
+  defineField({ name: 'eventUrl', title: 'Veranstaltungslink', description: 'Optionaler Link zur offiziellen Veranstaltung, Location, zum Veranstalter oder Ticketanbieter.', type: 'url', validation: (Rule) => Rule.uri({ scheme: ['http', 'https'] }) }),
   defineField({ name: 'visible', title: 'Öffentlich anzeigen', type: 'boolean', initialValue: false }),
 ] });
 
-const reference = defineType({ name: 'reference', title: 'Referenz', type: 'document', fields: [
+const bukkadorReference = defineType({ name: 'bukkadorReference', title: 'Referenz', type: 'document', fields: [
   defineField({ name: 'title', title: 'Name / Veranstaltung', type: 'string', validation: (Rule) => Rule.required() }),
   defineField({ name: 'eventType', title: 'Veranstaltungsart', type: 'string' }),
   defineField({ name: 'place', title: 'Ort', type: 'string' }),
@@ -97,4 +98,4 @@ const performanceOffer = defineType({ name: 'performanceOffer', title: 'Performa
   defineField({ name: 'order', title: 'Reihenfolge', type: 'number' }),
 ] });
 
-export const schemaTypes = [seo, contentSection, page, event, reference, testimonial, faq, media, navigation, siteSettings, performanceOffer];
+export const schemaTypes = [seo, contentSection, page, event, bukkadorReference, testimonial, faq, media, navigation, siteSettings, performanceOffer];

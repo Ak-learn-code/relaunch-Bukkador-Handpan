@@ -15,8 +15,8 @@ export const pageQuery = `*[_type == "page" && slug.current == $slug][0]{
   "sections": sections[]{title, text, points, tone, "image": {"src": image.asset->url, "alt": image.alt}},
   "faqs": faqs[]->{"question": question, "answer": answer}
 }`;
-export const eventsQuery = `*[_type == "event" && visible == true] | order(date asc){title, place, date, dateEnd, time, type}`;
-export const referencesQuery = `*[_type == "reference" && visible == true && permissionConfirmed == true] | order(date desc){title, eventType, place, date, occasion, performanceConcept, flow, "image": {"src": image.asset->url, "alt": image.alt}, "testimonial": testimonial->{quote, person, role, permissionConfirmed}, "gallery": gallery[]{"src": asset->url, alt}}`;
+export const eventsQuery = `*[_type == "event" && visible == true] | order(date asc){title, place, date, dateEnd, time, type, description, eventUrl, "image": {"src": image.asset->url, "alt": image.alt}}`;
+export const referencesQuery = `*[_type == "bukkadorReference" && visible == true && permissionConfirmed == true] | order(date desc){title, eventType, place, date, occasion, performanceConcept, flow, "image": {"src": image.asset->url, "alt": image.alt}, "testimonial": testimonial->{quote, person, role, permissionConfirmed}, "gallery": gallery[]{"src": asset->url, alt}}`;
 export const settingsQuery = `*[_type == "siteSettings"][0]{siteTitle, contactEmail, contactPhone, defaultSeo}`;
 export const navigationQuery = `*[_type == "navigation"][0]{items[]{label, href}}`;
 export const offersQuery = `*[_type == "performanceOffer"] | order(order asc){title, description, duration, features}`;
@@ -77,11 +77,17 @@ export async function getEvents(fallback: PublicEvent[]): Promise<PublicEvent[]>
   if (!sanityClient) return fallback;
   try {
     const records = await sanityClient.fetch<Array<Partial<PublicEvent>>>(eventsQuery);
-    const valid = records.filter((event) => event.title && event.place && event.date && event.type).map((event) => ({
+    const valid = records.filter((event) => event.title && event.date).map((event) => ({
       title: event.title!, place: event.place!, date: event.date!, dateEnd: event.dateEnd, time: event.time,
       type: event.type as PublicEvent['type'],
+      description: event.description,
+      image: event.image?.src ? { src: event.image.src, alt: event.image.alt } : undefined,
+      eventUrl: event.eventUrl,
     }));
-    return valid.length ? valid : fallback;
+    const normalize = (value = '') => value.toLocaleLowerCase('de-DE').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+    const key = (event: PublicEvent) => `${normalize(event.title)}|${event.date}`;
+    const remoteKeys = new Set(valid.map(key));
+    return [...valid, ...fallback.filter((event) => !remoteKeys.has(key(event)))];
   } catch (error) {
     console.warn('Öffentliche Termine nicht verfügbar; lokale Inhalte werden verwendet.', error);
     return fallback;
