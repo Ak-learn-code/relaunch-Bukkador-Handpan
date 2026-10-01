@@ -1,67 +1,92 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../content/site';
+
 const endpoint = import.meta.env.PUBLIC_EVENT_FORM_ENDPOINT ?? '';
 const path = (value: string) => `${import.meta.env.BASE_URL}${value.replace(/^\//, '')}`;
 ---
-<BaseLayout title="Event-Angebot anfragen" description="Prüfen Sie die Verfügbarkeit von Bukkador Handpan für Ihr Event. Mit wenigen Eckdaten erhalten Sie ein individuelles Angebot für Corporate Events, Hochzeiten und mehr.">
-  <div class="form-page"><section class="form-hero"><div class="shell"><h1>Erzählen Sie von Ihrem Event.</h1><p>Datum, Ort, Anlass und ein paar Wünsche reichen für den ersten Schritt. Michael Noll prüft die Verfügbarkeit und meldet sich persönlich.</p></div></section>
-  <section class="form-area"><div class="shell form-layout"><aside class="form-aside"><h2>Direkt. Persönlich. Klar.</h2><p>Sie bevorzugen den direkten Kontakt?</p><p><a href={`mailto:${site.email}`}>{site.email}</a><br /><a href={site.phoneHref}>{site.phone}</a></p><p>Wir prüfen Ihre Eckdaten und melden uns persönlich. Das Formular speichert keine Anfrage im Browser.</p></aside>
-  <form class="event-form" id="event-form" data-endpoint={endpoint} novalidate>
-    {!endpoint && <p class="form-unavailable">Der direkte Formularversand wird derzeit eingerichtet. Bitte schreiben Sie uns bis dahin an <a href={`mailto:${site.email}`}>{site.email}</a>. Die folgenden Felder zeigen den geplanten Anfrageablauf.</p>}
-    <p class="form-intro">Die mit * markierten Angaben helfen bei der ersten Einschätzung.</p>
-    <div class="field"><label for="name">Name *</label><input id="name" name="name" autocomplete="name" required /></div>
-    <div class="field"><label for="company">Unternehmen / Agentur</label><input id="company" name="company" autocomplete="organization" /></div>
-    <div class="field"><label for="email">E-Mail *</label><input id="email" name="email" type="email" autocomplete="email" required /></div>
-    <div class="field"><label for="phone">Telefon</label><input id="phone" name="phone" type="tel" autocomplete="tel" /></div>
-    <div class="field"><label for="eventType">Veranstaltungsart *</label><select id="eventType" name="eventType" required><option value="">Bitte wählen</option><option>Corporate Event</option><option>Firmenfeier</option><option>Gala / Empfang</option><option>Messe</option><option>Hochzeit</option><option>Eventagentur</option><option>Sonstiges</option></select></div>
-    <div class="field"><label for="date">Veranstaltungsdatum</label><input id="date" name="date" type="date" /></div>
-    <div class="field"><label for="location">Veranstaltungsort *</label><input id="location" name="location" placeholder="Stadt oder Location" required /></div>
-    <div class="field"><label for="guests">Gästezahl</label><input id="guests" name="guests" type="number" min="1" placeholder="Ungefähr" /></div>
-    <div class="field"><label for="duration">Gewünschte Performance / Begleitung</label><select id="duration" name="duration"><option value="">Noch offen</option><option>Empfang</option><option>Mehrere Sets / Eventbegleitung</option><option>Einzelner Programmpunkt</option><option>Individuelles Eventkonzept</option></select></div>
-    <div class="field"><label for="budget">Budgetrahmen</label><select id="budget" name="budget"><option value="">Noch nicht festgelegt</option><option>Unter 1.000 €</option><option>1.000–2.000 €</option><option>2.000–4.000 €</option><option>Über 4.000 €</option></select></div>
-    <div class="field full"><label for="message">Was ist Ihnen für die Musik wichtig?</label><textarea id="message" name="message" placeholder="Ablauf, gewünschte Stimmung, besondere Wünsche …"></textarea></div>
-    <div class="honeypot" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off" /></div>
-    <div class="form-actions"><p class="consent">Mit dem Absenden werden Ihre Angaben zur Bearbeitung der Anfrage verwendet. Details stehen in der <a href={path('/datenschutz/')}>Datenschutzerklärung</a>.</p><button class="button button-gold" type="submit" disabled={!endpoint}>Anfrage senden <span aria-hidden="true">↗</span></button><p class="form-status" id="form-status" role="status" aria-live="polite"></p></div>
-  </form></div></section></div>
+<BaseLayout title="Anfrage senden" description="Fragen Sie Bukkador für Ihr Event oder einen Handpan-Kurs an. Mit wenigen Angaben erhalten Sie eine persönliche Rückmeldung.">
+  <div class="form-page">
+    <section class="form-hero"><div class="shell"><h1>Erzählen Sie von Ihrem Vorhaben.</h1><p>Ob Live-Musik für ein Event oder ein persönlicher Einstieg in die Handpan: Mit wenigen Angaben kann Michael Noll die passende Anfrage einordnen und sich persönlich zurückmelden.</p></div></section>
+
+    <section class="form-area"><div class="shell form-layout"><aside class="form-aside"><h2>Für Events.</h2><p>Datum, Ort, Anlass und ein paar Wünsche reichen für den ersten Schritt.</p><p>Sie bevorzugen den direkten Kontakt?</p><p><a href={`mailto:${site.email}`}>{site.email}</a><br /><a href={site.phoneHref}>{site.phone}</a></p><p>Wir prüfen Ihre Eckdaten und melden uns persönlich. Das Formular speichert keine Anfrage im Browser.</p></aside>
+      <form class="event-form inquiry-form" id="event-form" data-endpoint={endpoint} data-inquiry="event" novalidate>
+        {!endpoint && <p class="form-unavailable">Der direkte Formularversand wird derzeit eingerichtet. Bitte schreiben Sie uns bis dahin an <a href={`mailto:${site.email}`}>{site.email}</a>. Die folgenden Felder zeigen den geplanten Anfrageablauf.</p>}
+        <p class="form-intro">Die mit * markierten Angaben helfen bei der ersten Einschätzung.</p>
+        <div class="field"><label for="event-name">Name *</label><input id="event-name" name="name" autocomplete="name" required /></div>
+        <div class="field"><label for="company">Unternehmen / Agentur</label><input id="company" name="company" autocomplete="organization" /></div>
+        <div class="field"><label for="event-email">E-Mail *</label><input id="event-email" name="email" type="email" autocomplete="email" required /></div>
+        <div class="field"><label for="event-phone">Telefon</label><input id="event-phone" name="phone" type="tel" autocomplete="tel" /></div>
+        <div class="field"><label for="eventType">Veranstaltungsart *</label><select id="eventType" name="eventType" required><option value="">Bitte wählen</option><option>Corporate Event</option><option>Firmenfeier</option><option>Gala / Empfang</option><option>Messe</option><option>Hochzeit</option><option>Eventagentur</option><option>Sonstiges</option></select></div>
+        <div class="field"><label for="date">Veranstaltungsdatum</label><input id="date" name="date" type="date" /></div>
+        <div class="field"><label for="location">Veranstaltungsort *</label><input id="location" name="location" placeholder="Stadt oder Location" required /></div>
+        <div class="field"><label for="guests">Gästezahl</label><input id="guests" name="guests" type="number" min="1" placeholder="Ungefähr" /></div>
+        <div class="field"><label for="duration">Gewünschte Performance / Begleitung</label><select id="duration" name="duration"><option value="">Noch offen</option><option>Empfang</option><option>Mehrere Sets / Eventbegleitung</option><option>Einzelner Programmpunkt</option><option>Individuelles Eventkonzept</option></select></div>
+        <div class="field"><label for="budget">Budgetrahmen</label><select id="budget" name="budget"><option value="">Noch nicht festgelegt</option><option>Unter 1.000 €</option><option>1.000–2.000 €</option><option>2.000–4.000 €</option><option>Über 4.000 €</option></select></div>
+        <div class="field full"><label for="event-message">Was ist Ihnen für die Musik wichtig?</label><textarea id="event-message" name="message" placeholder="Ablauf, gewünschte Stimmung, besondere Wünsche …"></textarea></div>
+        <div class="honeypot" aria-hidden="true"><label for="event-website">Website</label><input id="event-website" name="website" tabindex="-1" autocomplete="off" /></div>
+        <div class="form-actions"><p class="consent">Mit dem Absenden werden Ihre Angaben zur Bearbeitung der Anfrage verwendet. Details stehen in der <a href={path('/datenschutz/')}>Datenschutzerklärung</a>.</p><button class="button button-gold" type="submit" disabled={!endpoint}>Event-Anfrage senden <span aria-hidden="true">↗</span></button><p class="form-status" role="status" aria-live="polite"></p></div>
+      </form>
+    </div></section>
+
+    <section class="form-area academy-form-area" id="academy-anfrage"><div class="shell form-layout"><aside class="form-aside"><h2>Für die Academy.</h2><p>Teilen Sie mit, welches Format Sie interessiert und ob Sie bereits Handpan-Erfahrung haben. So kann Michael Noll Ihnen den passenden Einstieg empfehlen.</p><p>Für eine schnelle Anfrage erreichen Sie uns auch direkt unter <a href={`mailto:${site.email}`}>{site.email}</a>.</p></aside>
+      <form class="event-form inquiry-form" id="academy-form" data-endpoint={endpoint} data-inquiry="academy" novalidate>
+        {!endpoint && <p class="form-unavailable">Der direkte Formularversand wird derzeit eingerichtet. Bitte schreiben Sie uns bis dahin an <a href={`mailto:${site.email}`}>{site.email}</a>. Die folgenden Felder zeigen den geplanten Anfrageablauf.</p>}
+        <p class="form-intro">Die mit * markierten Angaben helfen bei der ersten Einschätzung.</p>
+        <input type="hidden" name="eventType" value="Academy / Handpan-Unterricht" />
+        <div class="field"><label for="academy-name">Name *</label><input id="academy-name" name="name" autocomplete="name" required /></div>
+        <div class="field"><label for="academy-email">E-Mail *</label><input id="academy-email" name="email" type="email" autocomplete="email" required /></div>
+        <div class="field"><label for="academy-phone">Telefon</label><input id="academy-phone" name="phone" type="tel" autocomplete="tel" /></div>
+        <div class="field"><label for="academy-location">Ihr Ort *</label><input id="academy-location" name="location" placeholder="Stadt oder Umgebung" required /></div>
+        <div class="field"><label for="academyFormat">Gewünschtes Format *</label><select id="academyFormat" name="academyFormat" required><option value="">Bitte wählen</option><option>Schnupperkurs</option><option>Einzelunterricht</option><option>Handpan for two</option><option>Workshop in kleiner Gruppe</option><option>Noch offen</option></select></div>
+        <div class="field"><label for="experience">Bisherige Erfahrung</label><select id="experience" name="experience"><option value="">Bitte wählen</option><option>Noch keine Erfahrung</option><option>Erste eigene Handpan-Erfahrung</option><option>Ich spiele bereits regelmäßig</option></select></div>
+        <div class="field"><label for="participants">Teilnehmende</label><select id="participants" name="participants"><option value="">Noch offen</option><option>1 Person</option><option>2 Personen</option><option>Kleine Gruppe</option></select></div>
+        <div class="field"><label for="academy-date">Wunschtermin</label><input id="academy-date" name="date" type="date" /></div>
+        <div class="field full"><label for="academy-message">Was möchten Sie lernen oder ausprobieren?</label><textarea id="academy-message" name="message" placeholder="Zum Beispiel erste Grundlagen, ein bestimmtes Pattern oder gemeinsames Spielen …"></textarea></div>
+        <div class="honeypot" aria-hidden="true"><label for="academy-website">Website</label><input id="academy-website" name="website" tabindex="-1" autocomplete="off" /></div>
+        <div class="form-actions"><p class="consent">Mit dem Absenden werden Ihre Angaben zur Bearbeitung der Anfrage verwendet. Details stehen in der <a href={path('/datenschutz/')}>Datenschutzerklärung</a>.</p><button class="button button-gold" type="submit" disabled={!endpoint}>Academy-Anfrage senden <span aria-hidden="true">↗</span></button><p class="form-status" role="status" aria-live="polite"></p></div>
+      </form>
+    </div></section>
+  </div>
   <script>
-    const form = document.querySelector<HTMLFormElement>('#event-form');
-    const status = document.querySelector<HTMLElement>('#form-status');
+    const forms = Array.from(document.querySelectorAll<HTMLFormElement>('.inquiry-form'));
     const queryType = new URLSearchParams(window.location.search).get('anlass');
-    const typeSelect = form?.querySelector<HTMLSelectElement>('#eventType');
+    const eventForm = document.querySelector<HTMLFormElement>('#event-form');
+    const typeSelect = eventForm?.querySelector<HTMLSelectElement>('#eventType');
     if (queryType && typeSelect && Array.from(typeSelect.options).some((option) => option.value === queryType)) typeSelect.value = queryType;
-    let started = false;
-    form?.addEventListener('focusin', () => {
-      if (started) return;
-      started = true;
-      window.dispatchEvent(new CustomEvent('form_start', { detail: { form: 'event-inquiry' } }));
-    });
-    form?.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      if (!form || !status) return;
-      status.classList.remove('error');
-      if (!form.reportValidity()) { status.textContent = 'Bitte ergänzen Sie die markierten Pflichtfelder.'; status.classList.add('error'); return; }
-      const values = Object.fromEntries(new FormData(form).entries());
-      if (values.website) return;
-      const endpoint = form.dataset.endpoint;
-      if (endpoint) {
+
+    forms.forEach((form) => {
+      const status = form.querySelector<HTMLElement>('.form-status');
+      const inquiry = form.dataset.inquiry ?? 'event';
+      let started = false;
+      form.addEventListener('focusin', () => {
+        if (started) return;
+        started = true;
+        window.dispatchEvent(new CustomEvent('form_start', { detail: { form: `${inquiry}-inquiry` } }));
+      });
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!status) return;
+        status.classList.remove('error');
+        if (!form.reportValidity()) { status.textContent = 'Bitte ergänzen Sie die markierten Pflichtfelder.'; status.classList.add('error'); return; }
+        const values = Object.fromEntries(new FormData(form).entries());
+        if (values.website) return;
+        const formEndpoint = form.dataset.endpoint;
+        if (!formEndpoint) { status.textContent = 'Der direkte Versand ist noch nicht eingerichtet. Bitte schreiben Sie an info@bukkador-handpan.de.'; status.classList.add('error'); return; }
         const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
         if (button) button.disabled = true;
         status.textContent = 'Ihre Anfrage wird gesendet …';
         try {
-          const response = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(values) });
+          const response = await fetch(formEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(values) });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          window.dispatchEvent(new CustomEvent('form_submit', { detail: { form: 'event-inquiry' } }));
-          if (values.eventType && values.location && values.date && values.budget) window.dispatchEvent(new CustomEvent('qualified_lead', { detail: { form: 'event-inquiry', eventType: values.eventType } }));
+          window.dispatchEvent(new CustomEvent('form_submit', { detail: { form: `${inquiry}-inquiry` } }));
+          if (inquiry === 'event' && values.eventType && values.location && values.date && values.budget) window.dispatchEvent(new CustomEvent('qualified_lead', { detail: { form: 'event-inquiry', eventType: values.eventType } }));
           window.location.assign(`${import.meta.env.BASE_URL}danke/`);
         } catch {
           status.textContent = 'Der Versand hat nicht geklappt. Bitte schreiben Sie direkt an info@bukkador-handpan.de.';
           status.classList.add('error');
         } finally { if (button) button.disabled = false; }
-        return;
-      }
-      status.textContent = 'Der direkte Versand ist noch nicht eingerichtet. Bitte schreiben Sie an info@bukkador-handpan.de.';
-      status.classList.add('error');
+      });
     });
   </script>
 </BaseLayout>

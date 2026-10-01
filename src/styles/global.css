@@ -211,3 +211,32 @@
   .artist-video-section .shell,.academy-video-grid{display:block}
   .artist-video-section .video-card,.academy-video-grid .video-card+.video-card{margin-top:2rem}
 }
+
+/* Request forms share one page but keep their two purposes unmistakable. */
+.academy-form-area{background:var(--paper-dark);scroll-margin-top:7rem}
+.academy-form-area .form-aside h2{max-width:8ch}
+.form-intro{grid-column:1/-1;margin:0;color:var(--muted);font-size:.84rem}
+
+/* The Events menu is aligned to the header rhythm and switches to the mobile drawer before links compete for space. */
+.site-header{z-index:100}
+.events-menu{min-width:max-content}
+.events-trigger{min-height:44px;padding-inline:.35rem}
+.events-dropdown{top:calc(100% - 1px);left:0;width:312px;padding:.55rem;transform:translateY(-6px) scale(.99);transform-origin:top left}
+.events-menu.is-open .events-dropdown{transform:translateY(0) scale(1)}
+.events-dropdown a{min-height:68px;padding:.8rem .9rem}
+.events-dropdown a strong{font-size:.8rem}
+.events-dropdown a small{font-size:.65rem}
+@media(max-width:1080px){
+  .desktop-nav,.header-cta{display:none}
+  .header-inner{justify-content:space-between;height:78px}
+  .mobile-nav{display:block;position:relative}
+}
+@media(min-width:951px) and (max-width:1080px){
+  .mobile-nav nav{right:-3.5vw}
+}
+@media(max-width:700px){
+  .academy-form-area{scroll-margin-top:1.5rem}
+  .academy-form-area .form-aside{order:0;margin:0 0 2.5rem;padding:0;border-top:0}
+  .academy-form-area .event-form{order:1}
+  .form-intro{grid-column:auto}
+}

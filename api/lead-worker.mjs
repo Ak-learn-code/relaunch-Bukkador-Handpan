@@ -1,5 +1,5 @@
-const fields = ['company', 'name', 'email', 'phone', 'eventType', 'date', 'location', 'guests', 'duration', 'budget', 'message'];
-const allowedTypes = new Set(['Corporate Event', 'Firmenfeier', 'Gala / Empfang', 'Messe', 'Hochzeit', 'Eventagentur', 'Sonstiges']);
+const fields = ['company', 'name', 'email', 'phone', 'eventType', 'date', 'location', 'guests', 'duration', 'budget', 'academyFormat', 'experience', 'participants', 'message'];
+const allowedTypes = new Set(['Corporate Event', 'Firmenfeier', 'Gala / Empfang', 'Messe', 'Hochzeit', 'Eventagentur', 'Sonstiges', 'Academy / Handpan-Unterricht']);
 
 function reply(body, status, origin) {
   return new Response(JSON.stringify(body), {
@@ -31,7 +31,7 @@ export default {
       const sent = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ from: env.FROM_EMAIL, to: [env.TO_EMAIL], reply_to: lead.email, subject: `Bukkador Event-Anfrage · ${lead.eventType}`, text: `${lines}\n\nLead-ID: ${id}` }),
+      body: JSON.stringify({ from: env.FROM_EMAIL, to: [env.TO_EMAIL], reply_to: lead.email, subject: `${lead.eventType === 'Academy / Handpan-Unterricht' ? 'Bukkador Academy-Anfrage' : `Bukkador Event-Anfrage · ${lead.eventType}`}`, text: `${lines}\n\nLead-ID: ${id}` }),
       });
       if (!sent.ok) throw new Error(`Mail delivery failed: ${sent.status}`);
       await env.LEADS.put(`lead:${id}`, JSON.stringify({ ...record, notification: 'sent' }), { expirationTtl: 60 * 60 * 24 * 30 });

@@ -35,3 +35,19 @@ test('stores a valid lead and sends notification', async () => {
     assert.equal(saved.at(-1).value.notification, 'sent');
   } finally { globalThis.fetch = previous; }
 });
+
+test('accepts Academy inquiries and gives them a distinct email subject', async () => {
+  const saved = [];
+  const academyLead = { ...lead, eventType: 'Academy / Handpan-Unterricht', location: 'Worms', academyFormat: 'Schnupperkurs', experience: 'Noch keine Erfahrung' };
+  const previous = globalThis.fetch;
+  globalThis.fetch = async (_url, options) => {
+    const body = JSON.parse(options.body);
+    assert.equal(body.subject, 'Bukkador Academy-Anfrage');
+    assert.match(body.text, /Schnupperkurs/);
+    return new Response('{}', { status: 200 });
+  };
+  try {
+    const response = await worker.fetch(request(academyLead), environment(saved));
+    assert.equal(response.status, 201);
+  } finally { globalThis.fetch = previous; }
+});

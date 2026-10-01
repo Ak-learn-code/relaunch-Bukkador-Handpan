@@ -112,7 +112,7 @@ const structuredData = [
         const trigger = menu.querySelector<HTMLButtonElement>('.events-trigger');
         const links = Array.from(menu.querySelectorAll<HTMLAnchorElement>('[role="menuitem"]'));
         let closeTimer: number | undefined;
-        const isDesktop = () => window.matchMedia('(min-width: 951px)').matches;
+        const isDesktop = () => window.matchMedia('(min-width: 1081px)').matches;
         const open = () => {
           if (!isDesktop() || !trigger) return;
           window.clearTimeout(closeTimer);
