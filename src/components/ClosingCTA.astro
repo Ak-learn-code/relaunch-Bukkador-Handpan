@@ -4,5 +4,5 @@ const { title = 'Lassen Sie uns über Ihr Event sprechen.', text = 'Teilen Sie d
 const path = (value: string) => `${import.meta.env.BASE_URL}${value.replace(/^\//, '')}`;
 ---
 <section class="closing-cta">
-  <div class="shell closing-inner"><div><h2 data-reveal="fade-up">{title}</h2><p data-reveal="fade-up">{text}</p></div><a class="button button-gold" data-reveal="fade-up" href={href ?? (academy ? path('/kontakt/#academy-anfrage') : path('/kontakt/'))}>{cta ?? (academy ? 'Academy anfragen' : 'Event-Verfügbarkeit prüfen')} <span aria-hidden="true">↗</span></a></div>
+  <div class="shell closing-inner"><div><h2 data-reveal="fade-up">{title}</h2><p data-reveal="fade-up">{text}</p></div><a class="button button-gold" data-reveal="fade-up" href={href ?? (academy ? path('/kontakt/#academy-anfrage') : path('/kontakt/'))}>{cta ?? (academy ? 'Academy anfragen' : 'Event-Verfügbarkeit prüfen')} <span class="arrow-icon" aria-hidden="true"></span></a></div>
 </section>

@@ -240,3 +240,7 @@
   .academy-form-area .event-form{order:1}
   .form-intro{grid-column:auto}
 }
+
+/* The CTA arrow is an SVG mask, so every platform renders the same shape. */
+.arrow-icon{display:inline-block;width:1em;height:1em;flex:0 0 1em;vertical-align:-.12em;background-color:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 19 19 5'/%3E%3Cpath d='M9 5h10v10'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 19 19 5'/%3E%3Cpath d='M9 5h10v10'/%3E%3C/svg%3E") center/contain no-repeat}
+.button .arrow-icon,.header-cta .arrow-icon,.mobile-nav-cta .arrow-icon,.text-link .arrow-icon{font-size:1em;line-height:1}

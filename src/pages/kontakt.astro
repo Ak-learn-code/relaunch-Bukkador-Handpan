@@ -25,7 +25,7 @@ const path = (value: string) => `${import.meta.env.BASE_URL}${value.replace(/^\/
         <div class="field"><label for="budget">Budgetrahmen</label><select id="budget" name="budget"><option value="">Noch nicht festgelegt</option><option>Unter 1.000 €</option><option>1.000–2.000 €</option><option>2.000–4.000 €</option><option>Über 4.000 €</option></select></div>
         <div class="field full"><label for="event-message">Was ist Ihnen für die Musik wichtig?</label><textarea id="event-message" name="message" placeholder="Ablauf, gewünschte Stimmung, besondere Wünsche …"></textarea></div>
         <div class="honeypot" aria-hidden="true"><label for="event-website">Website</label><input id="event-website" name="website" tabindex="-1" autocomplete="off" /></div>
-        <div class="form-actions"><p class="consent">Mit dem Absenden werden Ihre Angaben zur Bearbeitung der Anfrage verwendet. Details stehen in der <a href={path('/datenschutz/')}>Datenschutzerklärung</a>.</p><button class="button button-gold" type="submit" disabled={!endpoint}>Event-Anfrage senden <span aria-hidden="true">↗</span></button><p class="form-status" role="status" aria-live="polite"></p></div>
+        <div class="form-actions"><p class="consent">Mit dem Absenden werden Ihre Angaben zur Bearbeitung der Anfrage verwendet. Details stehen in der <a href={path('/datenschutz/')}>Datenschutzerklärung</a>.</p><button class="button button-gold" type="submit" disabled={!endpoint}>Event-Anfrage senden <span class="arrow-icon" aria-hidden="true"></span></button><p class="form-status" role="status" aria-live="polite"></p></div>
       </form>
     </div></section>
 
@@ -44,7 +44,7 @@ const path = (value: string) => `${import.meta.env.BASE_URL}${value.replace(/^\/
         <div class="field"><label for="academy-date">Wunschtermin</label><input id="academy-date" name="date" type="date" /></div>
         <div class="field full"><label for="academy-message">Was möchten Sie lernen oder ausprobieren?</label><textarea id="academy-message" name="message" placeholder="Zum Beispiel erste Grundlagen, ein bestimmtes Pattern oder gemeinsames Spielen …"></textarea></div>
         <div class="honeypot" aria-hidden="true"><label for="academy-website">Website</label><input id="academy-website" name="website" tabindex="-1" autocomplete="off" /></div>
-        <div class="form-actions"><p class="consent">Mit dem Absenden werden Ihre Angaben zur Bearbeitung der Anfrage verwendet. Details stehen in der <a href={path('/datenschutz/')}>Datenschutzerklärung</a>.</p><button class="button button-gold" type="submit" disabled={!endpoint}>Academy-Anfrage senden <span aria-hidden="true">↗</span></button><p class="form-status" role="status" aria-live="polite"></p></div>
+        <div class="form-actions"><p class="consent">Mit dem Absenden werden Ihre Angaben zur Bearbeitung der Anfrage verwendet. Details stehen in der <a href={path('/datenschutz/')}>Datenschutzerklärung</a>.</p><button class="button button-gold" type="submit" disabled={!endpoint}>Academy-Anfrage senden <span class="arrow-icon" aria-hidden="true"></span></button><p class="form-status" role="status" aria-live="polite"></p></div>
       </form>
     </div></section>
   </div>

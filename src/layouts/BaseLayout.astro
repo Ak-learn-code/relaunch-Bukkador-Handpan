@@ -69,7 +69,7 @@ const structuredData = [
           <a href={path('/referenzen/')} aria-current={Astro.url.pathname === path('/referenzen/') ? 'page' : undefined}>Referenzen</a>
           <a href={path('/academy/')} aria-current={Astro.url.pathname === path('/academy/') ? 'page' : undefined}>Bukkador Academy</a>
         </nav>
-        <a class="header-cta" href={path('/kontakt/')}>Event anfragen <span aria-hidden="true">↗</span></a>
+        <a class="header-cta" href={path('/kontakt/')}>Event anfragen <span class="arrow-icon" aria-hidden="true"></span></a>
         <details class="mobile-nav">
           <summary aria-label="Menü"><span></span><span></span><span class="sr-only">Menü</span></summary>
           <nav aria-label="Mobile Navigation">
@@ -82,7 +82,7 @@ const structuredData = [
             <a href={path('/ueber-bukkador/')} aria-current={Astro.url.pathname === path('/ueber-bukkador/') ? 'page' : undefined}>Über Bukkador</a>
             <a href={path('/referenzen/')} aria-current={Astro.url.pathname === path('/referenzen/') ? 'page' : undefined}>Referenzen</a>
             <a href={path('/academy/')} aria-current={Astro.url.pathname === path('/academy/') ? 'page' : undefined}>Bukkador Academy</a>
-            <a class="mobile-nav-cta" href={path('/kontakt/')}>Event anfragen <span aria-hidden="true">↗</span></a>
+            <a class="mobile-nav-cta" href={path('/kontakt/')}>Event anfragen <span class="arrow-icon" aria-hidden="true"></span></a>
           </nav>
         </details>
       </div>
